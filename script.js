@@ -25,6 +25,8 @@ document.addEventListener("DOMContentLoaded", () => {
   setActiveTab();
   initRain();
   initSkillsReveal();
+  initAboutReveal();
+  initStatsCounter();
 });
 
 function typeText(id, text, speed, onDone) {
@@ -124,4 +126,86 @@ function initSkillsReveal() {
   );
 
   groups.forEach((group) => observer.observe(group));
+}
+
+// The About page's statement and facts pull into focus (blur + lift),
+// staggered, the first time each block scrolls into view.
+function initAboutReveal() {
+  const blocks = document.querySelectorAll(".about-reveal");
+  if (!blocks.length) return;
+
+  const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+  blocks.forEach((block) => {
+    const items = block.querySelectorAll(".reveal-line, .fact, .stat");
+    items.forEach((item, i) => {
+      item.style.setProperty("--delay", `${i * 110}ms`);
+    });
+  });
+
+  if (reduceMotion) {
+    blocks.forEach((block) => block.classList.add("in-view"));
+    return;
+  }
+
+  const observer = new IntersectionObserver(
+    (entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add("in-view");
+          observer.unobserve(entry.target);
+        }
+      });
+    },
+    { threshold: 0.15, rootMargin: "0px 0px -40px 0px" }
+  );
+
+  blocks.forEach((block) => observer.observe(block));
+}
+
+// Stat numbers count up from zero the first time they scroll into view.
+function initStatsCounter() {
+  const nums = document.querySelectorAll(".stat-num[data-count]");
+  if (!nums.length) return;
+
+  const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  if (reduceMotion) return; // leave the final text as authored
+
+  const format = (value, decimals, suffix) => `${value.toFixed(decimals)}${suffix}`;
+
+  nums.forEach((el) => {
+    const target = parseFloat(el.dataset.count);
+    const decimals = (el.dataset.count.split(".")[1] || "").length;
+    const suffix = el.dataset.suffix || "";
+    el.textContent = format(0, decimals, suffix);
+    el.dataset.animated = "false";
+  });
+
+  const observer = new IntersectionObserver(
+    (entries) => {
+      entries.forEach((entry) => {
+        const el = entry.target;
+        if (entry.isIntersecting && el.dataset.animated === "false") {
+          el.dataset.animated = "true";
+          const target = parseFloat(el.dataset.count);
+          const decimals = (el.dataset.count.split(".")[1] || "").length;
+          const suffix = el.dataset.suffix || "";
+          const duration = 1200;
+          const start = performance.now();
+
+          function tick(now) {
+            const p = Math.min((now - start) / duration, 1);
+            const eased = 1 - Math.pow(1 - p, 3); // ease-out-cubic
+            el.textContent = format(target * eased, decimals, suffix);
+            if (p < 1) requestAnimationFrame(tick);
+          }
+          requestAnimationFrame(tick);
+          observer.unobserve(el);
+        }
+      });
+    },
+    { threshold: 0.4 }
+  );
+
+  nums.forEach((el) => observer.observe(el));
 }
