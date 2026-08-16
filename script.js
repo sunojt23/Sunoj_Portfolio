@@ -33,6 +33,7 @@ document.addEventListener("DOMContentLoaded", () => {
   initReveal(".skill-group", ".skill-item", 45);
   initReveal(".about-reveal", ".reveal-line, .fact, .stat", 110);
   initReveal(".timeline", ".job", 150);
+  initReveal(".blog-list", ".blog-post", 150);
   initReveal(".contact-list", ".contact-item", 90);
   initStatsCounter();
   initTelegram();

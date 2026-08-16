@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Blog — Sunoj Kumar Tomar</title>
+<meta name="description" content="Writing by Sunoj Kumar Tomar on data engineering, distributed systems, and what he's learning — posted on Hashnode.">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>💻</text></svg>">
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+<canvas id="rain" aria-hidden="true"></canvas>
+<div class="bg-overlay" aria-hidden="true"></div>
+
+<header class="nav">
+  <div class="nav-inner">
+    <a href="index.html" class="logo">sunoj<span class="accent">.dev</span></a>
+    <nav class="tabs" id="tabs">
+      <a href="about.html" class="tab">About</a>
+      <a href="skills.html" class="tab">Skills</a>
+      <a href="experience.html" class="tab">Experience</a>
+      <a href="projects.html" class="tab">Projects</a>
+      <a href="blog.html" class="tab">Blog</a>
+      <a href="contact.html" class="tab">Contact</a>
+    </nav>
+    <a href="assets/Sunoj_Kumar_Tomar_Resume.pdf" class="nav-resume" download>Résumé ↓</a>
+    <button class="menu-btn" id="menuBtn" aria-label="Toggle menu">☰</button>
+  </div>
+</header>
+
+<main>
+
+  <section class="page-head">
+    <h1 class="page-title">Blog</h1>
+  </section>
+
+  <section class="section section-noborder">
+    <p class="about-text">
+      Notes on data engineering, distributed systems, and whatever I'm learning next —
+      written on <a href="https://sunojexplains.hashnode.dev" target="_blank" rel="noopener" class="accent">Hashnode</a>.
+    </p>
+  </section>
+
+  <section class="section section-noborder">
+    <div class="blog-list">
+
+      <article class="blog-post">
+        <h3 class="blog-title">
+          <a href="https://sunojexplains.hashnode.dev/distributedsystems" target="_blank" rel="noopener">
+            The Scaling Wall: Big Data, GFS, and the End of Sitting Idle
+          </a>
+        </h3>
+        <p class="blog-date">Apr 18, 2026</p>
+        <p class="blog-excerpt">
+          Four years on my resume, zero hands-on experience — and why I stopped sitting idle.
+          A look at how Google solved the scaling wall with GFS and MapReduce, and how that
+          history is the reason Hadoop and PySpark exist.
+        </p>
+        <a href="https://sunojexplains.hashnode.dev/distributedsystems" target="_blank" rel="noopener" class="blog-link">Read on Hashnode →</a>
+      </article>
+
+    </div>
+  </section>
+
+  <section class="section">
+    <p class="line result">
+      Want more? <a href="https://sunojexplains.hashnode.dev" target="_blank" rel="noopener" class="accent">View all posts on Hashnode →</a>
+    </p>
+  </section>
+
+</main>
+
+<footer class="footer">
+  <p>&copy; <span id="year"></span> Sunoj Kumar Tomar. Built with HTML, CSS &amp; JS.</p>
+</footer>
+
+<script src="script.js"></script>
+</body>
+</html>
