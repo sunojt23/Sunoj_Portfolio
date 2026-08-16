@@ -31,6 +31,7 @@ body {
   min-height: 100vh;
   display: flex;
   flex-direction: column;
+  overflow-x: hidden; /* contains the nav's scan-line sweep without ever clipping the dropdown */
   background: var(--bg);
   color: var(--text);
   font-family: var(--mono);
@@ -86,7 +87,6 @@ a { color: inherit; text-decoration: none; }
   background: rgba(10, 10, 11, 0.92);
   backdrop-filter: blur(8px);
   border-bottom: 1px solid var(--border);
-  overflow: hidden;
 }
 
 /* A slow scanning light traveling the bottom edge — ambient, not distracting. */
@@ -236,6 +236,30 @@ a { color: inherit; text-decoration: none; }
   padding: 4px 10px;
   cursor: pointer;
 }
+
+/* Home page only: the nav stays collapsed to just the logo and this button
+   at every width, unpacking into the full link list on click — keeping
+   the intro page down to essentially nothing but itself. */
+.nav-compact .menu-btn { display: inline-block; }
+
+.nav-compact .tabs {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  right: 0;
+  background: rgba(10, 10, 11, 0.97);
+  backdrop-filter: blur(8px);
+  border-bottom: 1px solid var(--border);
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 14px;
+  padding: 14px 20px 20px;
+  display: none;
+}
+
+.nav-compact .tabs.open { display: flex; }
+
+.tabs .nav-resume { color: var(--accent); }
 
 /* ---------------- LAYOUT ---------------- */
 main {
@@ -638,19 +662,15 @@ main {
 /* ---------------- CONTACT — vintage telegram ---------------- */
 /* A double-ruled frame, all-caps teletype voice, STOP for punctuation —
    the message types itself out the first time it scrolls into view. */
+/* A soft single rule, not a hard-edged box — it should read as a faint
+   watermark of a frame, not a card sitting on top of the page. */
 .telegram {
   position: relative;
-  border: 1px solid var(--border);
   padding: 30px 34px;
   max-width: 620px;
-}
-
-.telegram::before {
-  content: "";
-  position: absolute;
-  inset: 7px;
-  border: 1px solid var(--border);
-  pointer-events: none;
+  border: 1px solid rgba(244, 244, 245, 0.09);
+  box-shadow: inset 0 0 40px rgba(0, 0, 0, 0.5);
+  border-radius: 2px;
 }
 
 .telegram-label {

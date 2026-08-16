@@ -3,6 +3,17 @@
 // Small, dependency-free interactions.
 // ===================================================
 
+// Applies the hidden `.js-anim` state instantly, with no transition — so
+// switching an already-visible element into "about to be revealed" never
+// itself plays as a visible fade-out. The transition is restored right
+// after, so removing the class later animates normally.
+function hideForAnim(el) {
+  el.style.transition = "none";
+  el.classList.add("js-anim");
+  el.offsetHeight; // force a reflow so the transition-less state actually paints
+  el.style.transition = "";
+}
+
 document.addEventListener("DOMContentLoaded", () => {
   initHeroScramble();
 
@@ -43,8 +54,8 @@ function initHeroScramble() {
 
   if (reduceMotion) return; // leave name, role, and quote exactly as authored
 
-  if (role) role.classList.add("js-anim");
-  if (quote) quote.classList.add("js-anim");
+  if (role) hideForAnim(role);
+  if (quote) hideForAnim(quote);
 
   scrambleText(nameEl, finalName, 1100, () => {
     if (role) role.classList.remove("js-anim");
@@ -156,7 +167,7 @@ function initReveal(containerSelector, itemSelector, staggerMs) {
   containers.forEach((container) => {
     container.querySelectorAll(itemSelector).forEach((item, i) => {
       item.style.setProperty("--delay", `${i * staggerMs}ms`);
-      item.classList.add("js-anim");
+      hideForAnim(item);
     });
   });
 
