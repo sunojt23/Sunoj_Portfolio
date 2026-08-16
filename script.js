@@ -19,13 +19,19 @@ document.addEventListener("DOMContentLoaded", () => {
 
   setActiveTab();
   initRain();
-  initSkillsReveal();
-  initAboutReveal();
+  initReveal(".skill-group", ".skill-item", 45);
+  initReveal(".about-reveal", ".reveal-line, .fact, .stat", 110);
+  initReveal(".timeline", ".job", 150);
+  initReveal(".contact-list", ".contact-item", 90);
   initStatsCounter();
+  initTelegram();
 });
 
 // Home page intro: the name decodes itself out of scrambled characters,
-// then the designation and quote pull into focus in sequence.
+// then the designation and quote pull into focus in sequence. Both start
+// fully visible in the HTML — .js-anim (added here, right before the
+// animation runs) is what makes them fade out to animate back in, so a
+// script that fails to run never leaves real content hidden.
 function initHeroScramble() {
   const nameEl = document.getElementById("typedName");
   if (!nameEl) return; // only on the home page
@@ -35,16 +41,14 @@ function initHeroScramble() {
   const quote = document.querySelector(".hero-quote");
   const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
-  if (reduceMotion) {
-    nameEl.textContent = finalName;
-    if (role) role.classList.add("show");
-    if (quote) quote.classList.add("show");
-    return;
-  }
+  if (reduceMotion) return; // leave name, role, and quote exactly as authored
+
+  if (role) role.classList.add("js-anim");
+  if (quote) quote.classList.add("js-anim");
 
   scrambleText(nameEl, finalName, 1100, () => {
-    if (role) role.classList.add("show");
-    setTimeout(() => { if (quote) quote.classList.add("show"); }, 450);
+    if (role) role.classList.remove("js-anim");
+    setTimeout(() => { if (quote) quote.classList.remove("js-anim"); }, 450);
   });
 }
 
@@ -133,65 +137,35 @@ function initRain() {
   requestAnimationFrame(draw);
 }
 
-// Skills fade + lift into place, staggered, the first time each group
-// scrolls into view. Reduced-motion users just see them appear.
-function initSkillsReveal() {
-  const groups = document.querySelectorAll(".skill-group");
-  if (!groups.length) return;
+// Generic scroll-reveal: every `itemSelector` inside each `containerSelector`
+// fades/blurs/lifts into place, staggered, the first time its container
+// scrolls into view. Used for skills, About's statement/facts/stats, the
+// experience timeline, and the contact list — one mechanism, several pages.
+//
+// Items are fully visible by default in the HTML/CSS. This only *adds* the
+// hidden `.js-anim` state right before observing, and removes it again on
+// reveal — so if this script never runs (blocked, slow, an error upstream),
+// every page still renders with normal, fully legible text.
+function initReveal(containerSelector, itemSelector, staggerMs) {
+  const containers = document.querySelectorAll(containerSelector);
+  if (!containers.length) return;
 
   const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  if (reduceMotion) return; // leave everything exactly as authored, no hiding at all
 
-  groups.forEach((group) => {
-    group.querySelectorAll(".skill-item").forEach((item, i) => {
-      item.style.setProperty("--delay", `${i * 45}ms`);
+  containers.forEach((container) => {
+    container.querySelectorAll(itemSelector).forEach((item, i) => {
+      item.style.setProperty("--delay", `${i * staggerMs}ms`);
+      item.classList.add("js-anim");
     });
   });
-
-  if (reduceMotion) {
-    groups.forEach((group) => group.classList.add("in-view"));
-    return;
-  }
 
   const observer = new IntersectionObserver(
     (entries) => {
       entries.forEach((entry) => {
         if (entry.isIntersecting) {
           entry.target.classList.add("in-view");
-          observer.unobserve(entry.target);
-        }
-      });
-    },
-    { threshold: 0.2, rootMargin: "0px 0px -40px 0px" }
-  );
-
-  groups.forEach((group) => observer.observe(group));
-}
-
-// The About page's statement and facts pull into focus (blur + lift),
-// staggered, the first time each block scrolls into view.
-function initAboutReveal() {
-  const blocks = document.querySelectorAll(".about-reveal");
-  if (!blocks.length) return;
-
-  const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-
-  blocks.forEach((block) => {
-    const items = block.querySelectorAll(".reveal-line, .fact, .stat");
-    items.forEach((item, i) => {
-      item.style.setProperty("--delay", `${i * 110}ms`);
-    });
-  });
-
-  if (reduceMotion) {
-    blocks.forEach((block) => block.classList.add("in-view"));
-    return;
-  }
-
-  const observer = new IntersectionObserver(
-    (entries) => {
-      entries.forEach((entry) => {
-        if (entry.isIntersecting) {
-          entry.target.classList.add("in-view");
+          entry.target.querySelectorAll(itemSelector).forEach((item) => item.classList.remove("js-anim"));
           observer.unobserve(entry.target);
         }
       });
@@ -199,10 +173,56 @@ function initAboutReveal() {
     { threshold: 0.15, rootMargin: "0px 0px -40px 0px" }
   );
 
-  blocks.forEach((block) => observer.observe(block));
+  containers.forEach((container) => observer.observe(container));
+}
+
+// The telegram message types itself out, teletype-style, the first time it
+// scrolls into view — a different animation identity from the home page's
+// scramble, fitting the vintage voice of this one page. The full message
+// stays in the HTML the whole time; only the observer callback below ever
+// clears it, right as typing is about to start, so it's never blank while
+// waiting on the scroll trigger.
+function initTelegram() {
+  const el = document.getElementById("telegramBody");
+  if (!el) return;
+
+  const finalText = el.textContent.trim();
+  const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  if (reduceMotion) return; // leave the authored text as-is
+
+  const observer = new IntersectionObserver(
+    (entries) => {
+      entries.forEach((entry) => {
+        if (!entry.isIntersecting) return;
+        observer.unobserve(entry.target);
+
+        el.textContent = "";
+        const cursor = document.createElement("span");
+        cursor.className = "telegram-cursor";
+        cursor.textContent = "▌";
+
+        let i = 0;
+        const speed = 26;
+        const timer = setInterval(() => {
+          el.textContent = finalText.slice(0, i + 1);
+          el.appendChild(cursor);
+          i++;
+          if (i >= finalText.length) {
+            clearInterval(timer);
+            setTimeout(() => cursor.remove(), 1000);
+          }
+        }, speed);
+      });
+    },
+    { threshold: 0.3 }
+  );
+
+  observer.observe(el);
 }
 
 // Stat numbers count up from zero the first time they scroll into view.
+// Each one keeps its real, final text until the moment it actually starts
+// counting — never zeroed out while just waiting to scroll into view.
 function initStatsCounter() {
   const nums = document.querySelectorAll(".stat-num[data-count]");
   if (!nums.length) return;
@@ -212,35 +232,27 @@ function initStatsCounter() {
 
   const format = (value, decimals, suffix) => `${value.toFixed(decimals)}${suffix}`;
 
-  nums.forEach((el) => {
-    const target = parseFloat(el.dataset.count);
-    const decimals = (el.dataset.count.split(".")[1] || "").length;
-    const suffix = el.dataset.suffix || "";
-    el.textContent = format(0, decimals, suffix);
-    el.dataset.animated = "false";
-  });
-
   const observer = new IntersectionObserver(
     (entries) => {
       entries.forEach((entry) => {
         const el = entry.target;
-        if (entry.isIntersecting && el.dataset.animated === "false") {
-          el.dataset.animated = "true";
-          const target = parseFloat(el.dataset.count);
-          const decimals = (el.dataset.count.split(".")[1] || "").length;
-          const suffix = el.dataset.suffix || "";
-          const duration = 1200;
-          const start = performance.now();
+        if (!entry.isIntersecting) return;
+        observer.unobserve(el);
 
-          function tick(now) {
-            const p = Math.min((now - start) / duration, 1);
-            const eased = 1 - Math.pow(1 - p, 3); // ease-out-cubic
-            el.textContent = format(target * eased, decimals, suffix);
-            if (p < 1) requestAnimationFrame(tick);
-          }
-          requestAnimationFrame(tick);
-          observer.unobserve(el);
+        const target = parseFloat(el.dataset.count);
+        const decimals = (el.dataset.count.split(".")[1] || "").length;
+        const suffix = el.dataset.suffix || "";
+        const duration = 1200;
+        el.textContent = format(0, decimals, suffix);
+        const start = performance.now();
+
+        function tick(now) {
+          const p = Math.min((now - start) / duration, 1);
+          const eased = 1 - Math.pow(1 - p, 3); // ease-out-cubic
+          el.textContent = format(target * eased, decimals, suffix);
+          if (p < 1) requestAnimationFrame(tick);
         }
+        requestAnimationFrame(tick);
       });
     },
     { threshold: 0.4 }

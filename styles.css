@@ -260,21 +260,21 @@ main {
   padding: 48px 0;
 }
 
+/* Default state is always fully visible, legible text — .js-anim is added
+   by script.js right before the reveal starts, so a slow/blocked/failed
+   script never leaves real content faded out. */
 .hero-role {
   margin: 14px 0 0;
   font-size: clamp(15px, 2.4vw, 19px);
   color: var(--text-dim);
   text-transform: uppercase;
   letter-spacing: 0.16em;
-  opacity: 0;
-  filter: blur(8px);
-  transform: translateY(10px);
   transition: opacity 0.8s cubic-bezier(0.22, 0.8, 0.2, 1),
               filter 0.8s cubic-bezier(0.22, 0.8, 0.2, 1),
               transform 0.8s cubic-bezier(0.22, 0.8, 0.2, 1);
 }
 
-.hero-role.show { opacity: 1; filter: blur(0); transform: translateY(0); }
+.hero-role.js-anim { opacity: 0; filter: blur(8px); transform: translateY(10px); }
 
 .hero-quote {
   margin: 30px 0 0;
@@ -282,15 +282,12 @@ main {
   font-size: 13.5px;
   font-style: italic;
   color: var(--text-faint);
-  opacity: 0;
-  filter: blur(8px);
-  transform: translateY(10px);
   transition: opacity 0.8s cubic-bezier(0.22, 0.8, 0.2, 1),
               filter 0.8s cubic-bezier(0.22, 0.8, 0.2, 1),
               transform 0.8s cubic-bezier(0.22, 0.8, 0.2, 1);
 }
 
-.hero-quote.show { opacity: 1; filter: blur(0); transform: translateY(0); }
+.hero-quote.js-anim { opacity: 0; filter: blur(8px); transform: translateY(10px); }
 
 .quote-attr {
   display: block;
@@ -301,10 +298,6 @@ main {
   text-transform: uppercase;
   color: var(--text-faint);
   opacity: 0.75;
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .hero-role, .hero-quote { opacity: 1; filter: none; transform: none; }
 }
 
 .section { padding: 48px 0; border-top: 1px solid var(--border); }
@@ -335,14 +328,11 @@ main {
   display: flex;
   flex-direction: column;
   gap: 2px;
-  opacity: 0;
-  filter: blur(6px);
-  transform: translateY(12px);
   transition: opacity 0.7s ease, filter 0.7s ease, transform 0.7s ease;
   transition-delay: var(--delay, 0s);
 }
 
-.stats-row.in-view .stat { opacity: 1; filter: blur(0); transform: translateY(0); }
+.stat.js-anim { opacity: 0; filter: blur(6px); transform: translateY(12px); }
 
 .stat-num {
   font-size: 26px;
@@ -419,16 +409,13 @@ main {
 
 .reveal-line {
   display: block;
-  opacity: 0;
-  filter: blur(10px);
-  transform: translateY(18px);
   transition: opacity 0.9s cubic-bezier(0.22, 0.8, 0.2, 1),
               filter 0.9s cubic-bezier(0.22, 0.8, 0.2, 1),
               transform 0.9s cubic-bezier(0.22, 0.8, 0.2, 1);
   transition-delay: var(--delay, 0s);
 }
 
-.about-reveal.in-view .reveal-line { opacity: 1; filter: blur(0); transform: translateY(0); }
+.reveal-line.js-anim { opacity: 0; filter: blur(10px); transform: translateY(18px); }
 
 /* Facts read like a gallery wall label, not a data structure. */
 .facts-grid {
@@ -440,14 +427,11 @@ main {
 .fact-wide { grid-column: 1 / -1; }
 
 .fact {
-  opacity: 0;
-  filter: blur(6px);
-  transform: translateY(12px);
   transition: opacity 0.7s ease, filter 0.7s ease, transform 0.7s ease;
   transition-delay: var(--delay, 0s);
 }
 
-.facts-grid.in-view .fact { opacity: 1; filter: blur(0); transform: translateY(0); }
+.fact.js-anim { opacity: 0; filter: blur(6px); transform: translateY(12px); }
 
 .fact-label {
   margin: 0 0 6px;
@@ -462,14 +446,6 @@ main {
   font-size: 14.5px;
   color: var(--text);
   max-width: 46ch;
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .reveal-line, .fact, .stat {
-    opacity: 1;
-    filter: none;
-    transform: none;
-  }
 }
 
 .about-text {
@@ -529,28 +505,15 @@ main {
    group scrolls into view — then stays put. Hover gives it a quiet glow. */
 .skill-item {
   display: inline-block;
-  opacity: 0;
-  transform: translateY(7px);
   transition: opacity 0.5s ease, transform 0.5s ease, color 0.15s ease, text-shadow 0.15s ease;
   transition-delay: var(--delay, 0s);
 }
 
-.skill-group.in-view .skill-item {
-  opacity: 1;
-  transform: translateY(0);
-}
+.skill-item.js-anim { opacity: 0; transform: translateY(7px); }
 
 .skill-item:hover {
   color: var(--accent);
   text-shadow: 0 0 10px rgba(217, 164, 65, 0.45);
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .skill-item {
-    opacity: 1;
-    transform: none;
-    transition: color 0.15s ease;
-  }
 }
 
 /* ---------------- EXPERIENCE ---------------- */
@@ -564,7 +527,13 @@ main {
   position: relative;
   padding-left: 20px;
   border-left: 2px solid var(--border);
+  transition: opacity 0.8s cubic-bezier(0.22, 0.8, 0.2, 1),
+              filter 0.8s cubic-bezier(0.22, 0.8, 0.2, 1),
+              transform 0.8s cubic-bezier(0.22, 0.8, 0.2, 1);
+  transition-delay: var(--delay, 0s);
 }
+
+.job.js-anim { opacity: 0; filter: blur(8px); transform: translateY(16px); }
 
 .job::before {
   content: "";
@@ -576,6 +545,17 @@ main {
   border-radius: 50%;
   background: var(--accent);
   box-shadow: 0 0 0 3px var(--bg), 0 0 8px rgba(217, 164, 65, 0.6);
+}
+
+.timeline.in-view .job::before {
+  animation: job-pulse 1.3s ease;
+  animation-delay: var(--delay, 0s);
+}
+
+@keyframes job-pulse {
+  0% { box-shadow: 0 0 0 3px var(--bg), 0 0 0 rgba(217, 164, 65, 0); }
+  40% { box-shadow: 0 0 0 3px var(--bg), 0 0 18px rgba(217, 164, 65, 0.9); }
+  100% { box-shadow: 0 0 0 3px var(--bg), 0 0 8px rgba(217, 164, 65, 0.6); }
 }
 
 .job-head {
@@ -655,7 +635,48 @@ main {
 
 .project-stack span { color: var(--accent); }
 
-/* ---------------- CONTACT ---------------- */
+/* ---------------- CONTACT — vintage telegram ---------------- */
+/* A double-ruled frame, all-caps teletype voice, STOP for punctuation —
+   the message types itself out the first time it scrolls into view. */
+.telegram {
+  position: relative;
+  border: 1px solid var(--border);
+  padding: 30px 34px;
+  max-width: 620px;
+}
+
+.telegram::before {
+  content: "";
+  position: absolute;
+  inset: 7px;
+  border: 1px solid var(--border);
+  pointer-events: none;
+}
+
+.telegram-label {
+  margin: 0 0 18px;
+  font-size: 11px;
+  letter-spacing: 0.3em;
+  color: var(--accent);
+  text-align: center;
+}
+
+.telegram-body {
+  margin: 0;
+  font-size: 14px;
+  line-height: 1.9;
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+  color: var(--text-dim);
+}
+
+.telegram-cursor {
+  color: var(--accent);
+  animation: telegram-blink 1s step-end infinite;
+}
+
+@keyframes telegram-blink { 50% { opacity: 0; } }
+
 .contact-list {
   display: flex;
   flex-direction: column;
@@ -669,8 +690,11 @@ main {
   border-bottom: 1px solid var(--border);
   font-size: 13.5px;
   color: var(--text);
-  transition: color 0.15s ease;
+  transition: opacity 0.7s ease, filter 0.7s ease, transform 0.7s ease, color 0.15s ease;
+  transition-delay: var(--delay, 0s);
 }
+
+.contact-item.js-anim { opacity: 0; filter: blur(6px); transform: translateY(10px); }
 
 .contact-item:last-child { border-bottom: none; }
 
@@ -681,6 +705,15 @@ a.contact-item:hover { color: var(--accent-bright); text-shadow: 0 0 10px rgba(2
 .contact-label {
   color: var(--text-faint);
   min-width: 70px;
+}
+
+@media (max-width: 500px) {
+  .telegram { padding: 24px 20px; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .timeline.in-view .job::before { animation: none; }
+  .telegram-cursor { animation: none; }
 }
 
 /* ---------------- FOOTER ---------------- */
