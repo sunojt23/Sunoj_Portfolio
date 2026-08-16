@@ -24,63 +24,34 @@
       <a href="projects.html" class="tab">Projects</a>
       <a href="contact.html" class="tab">Contact</a>
     </nav>
+    <a href="assets/Sunoj_Kumar_Tomar_Resume.pdf" class="nav-resume" download>Résumé ↓</a>
     <button class="menu-btn" id="menuBtn" aria-label="Toggle menu">☰</button>
   </div>
 </header>
 
 <main id="top">
 
-  <!-- ============ HERO — minimal intro ============ -->
+  <!-- ============ HERO — name and designation, nothing else ============ -->
   <section class="hero">
     <h1 class="typed-name"><span id="typedName"></span><span class="cursor">▌</span></h1>
     <p class="hero-role" id="typedRole"></p>
   </section>
 
-  <!-- ============ CTA ============ -->
-  <section class="section section-noborder section-tight">
-    <div class="cta-row">
-      <a href="assets/Sunoj_Kumar_Tomar_Resume.pdf" class="btn btn-primary" download>↓ resume.pdf</a>
-      <a href="mailto:sunojtomar23@gmail.com" class="btn">✉ contact_me()</a>
-      <a href="https://github.com/sunojkumar" class="btn" target="_blank" rel="noopener">github</a>
-      <a href="https://linkedin.com/in/sunojtomar23" class="btn" target="_blank" rel="noopener">linkedin</a>
-    </div>
-  </section>
-
-  <!-- ============ STATS ============ -->
-  <section class="section section-noborder">
-    <div class="stats-row">
-      <div class="stat"><span class="stat-num">4+</span><span class="stat-label">years experience</span></div>
-      <div class="stat"><span class="stat-num">15+</span><span class="stat-label">pipelines shipped</span></div>
-      <div class="stat"><span class="stat-num">10M+</span><span class="stat-label">records processed</span></div>
-      <div class="stat"><span class="stat-num">99.5%</span><span class="stat-label">SLA accuracy</span></div>
-    </div>
-  </section>
-
-  <!-- ============ DIRECTORY ============ -->
+  <!-- ============ SITE MAP — a pipeline DAG ============ -->
   <section class="section">
-    <h2 class="section-title"><span class="comment">// </span>explore</h2>
-    <p class="line"><span class="prompt">&gt;</span> ls ./</p>
-    <div class="page-links">
-      <a class="page-link" href="about.html">
-        <span class="pl-name">about.html</span>
-        <span class="pl-desc">Background, focus areas, education</span>
-      </a>
-      <a class="page-link" href="skills.html">
-        <span class="pl-name">skills.html</span>
-        <span class="pl-desc">Languages, tools, platforms</span>
-      </a>
-      <a class="page-link" href="experience.html">
-        <span class="pl-name">experience.html</span>
-        <span class="pl-desc">Cognizant · Eurekai</span>
-      </a>
-      <a class="page-link" href="projects.html">
-        <span class="pl-name">projects.html</span>
-        <span class="pl-desc">Inventory &amp; demand forecasting</span>
-      </a>
-      <a class="page-link" href="contact.html">
-        <span class="pl-name">contact.html</span>
-        <span class="pl-desc">Email, phone, socials</span>
-      </a>
+    <p class="section-label">sitemap</p>
+    <div class="dag">
+      <span class="dag-source" aria-hidden="true"></span>
+      <span class="dag-edge"></span>
+      <a class="dag-node" href="about.html">About</a>
+      <span class="dag-edge"></span>
+      <a class="dag-node" href="skills.html">Skills</a>
+      <span class="dag-edge"></span>
+      <a class="dag-node" href="experience.html">Experience</a>
+      <span class="dag-edge"></span>
+      <a class="dag-node" href="projects.html">Projects</a>
+      <span class="dag-edge"></span>
+      <a class="dag-node dag-node--end" href="contact.html">Contact</a>
     </div>
   </section>
 

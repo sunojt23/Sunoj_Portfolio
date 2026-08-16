@@ -68,16 +68,17 @@ function initRain() {
 
   function draw() {
     // Short trail fade — visible motion without smearing into a solid haze.
-    ctx.fillStyle = "rgba(6, 10, 8, 0.045)";
+    ctx.fillStyle = "rgba(10, 10, 11, 0.045)";
     ctx.fillRect(0, 0, w, h);
     ctx.font = fontSize + "px monospace";
 
     for (let i = 0; i < columns; i++) {
       const text = chars[Math.floor(Math.random() * chars.length)];
-      // Occasional brighter "lead" glyph, like classic code-rain.
-      ctx.fillStyle = Math.random() > 0.96
-        ? "rgba(107, 255, 171, 0.65)"
-        : "rgba(51, 209, 122, 0.4)";
+      // Mostly neutral gray digits, with an occasional amber "lead" glyph —
+      // a single signal in the noise, matching the accent color.
+      ctx.fillStyle = Math.random() > 0.97
+        ? "rgba(240, 194, 116, 0.75)"
+        : "rgba(161, 161, 170, 0.35)";
       ctx.fillText(text, i * fontSize, drops[i] * fontSize);
       if (drops[i] * fontSize > h && Math.random() > 0.975) drops[i] = 0;
       drops[i]++;
