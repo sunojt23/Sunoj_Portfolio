@@ -5,7 +5,10 @@
 
 document.addEventListener("DOMContentLoaded", () => {
   typeText("typedName", "Sunoj Kumar Tomar", 45, () => {
-    typeText("typedRole", "Data Engineer", 40);
+    typeText("typedRole", "Data Engineer", 40, () => {
+      const tagline = document.querySelector(".hero-tagline");
+      if (tagline) tagline.classList.add("show");
+    });
   });
 
   document.getElementById("year").textContent = new Date().getFullYear();
