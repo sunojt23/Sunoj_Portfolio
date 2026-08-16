@@ -4,12 +4,7 @@
 // ===================================================
 
 document.addEventListener("DOMContentLoaded", () => {
-  typeText("typedName", "Sunoj Kumar Tomar", 45, () => {
-    typeText("typedRole", "Data Engineer", 40, () => {
-      const tagline = document.querySelector(".hero-tagline");
-      if (tagline) tagline.classList.add("show");
-    });
-  });
+  initHeroScramble();
 
   document.getElementById("year").textContent = new Date().getFullYear();
 
@@ -29,18 +24,62 @@ document.addEventListener("DOMContentLoaded", () => {
   initStatsCounter();
 });
 
-function typeText(id, text, speed, onDone) {
-  const el = document.getElementById(id);
-  if (!el) return;
-  let i = 0;
+// Home page intro: the name decodes itself out of scrambled characters,
+// then the designation and quote pull into focus in sequence.
+function initHeroScramble() {
+  const nameEl = document.getElementById("typedName");
+  if (!nameEl) return; // only on the home page
+
+  const finalName = nameEl.textContent.trim();
+  const role = document.querySelector(".hero-role");
+  const quote = document.querySelector(".hero-quote");
+  const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+  if (reduceMotion) {
+    nameEl.textContent = finalName;
+    if (role) role.classList.add("show");
+    if (quote) quote.classList.add("show");
+    return;
+  }
+
+  scrambleText(nameEl, finalName, 1100, () => {
+    if (role) role.classList.add("show");
+    setTimeout(() => { if (quote) quote.classList.add("show"); }, 450);
+  });
+}
+
+// Cycles each character through random glyphs before locking it to its
+// final value, left to right with a little jitter — a decode/reveal effect.
+function scrambleText(el, finalText, duration, onDone) {
+  const glyphs = "ABCDEFGHIJKLMNOPQRSTUVWXYZ!<>-_\\/[]{}=+*^?#";
+  const frameRate = 32;
+  const totalFrames = Math.ceil(duration / frameRate);
+  const length = finalText.length;
+
+  const revealFrame = finalText.split("").map((c, i) => {
+    if (c === " ") return 0;
+    return Math.floor((i / length) * totalFrames * 0.65 + Math.random() * totalFrames * 0.35);
+  });
+
+  let frame = 0;
   const timer = setInterval(() => {
-    el.textContent = text.slice(0, i + 1);
-    i++;
-    if (i >= text.length) {
+    let out = "";
+    for (let i = 0; i < length; i++) {
+      const c = finalText[i];
+      if (c === " " || frame >= revealFrame[i]) {
+        out += c;
+      } else {
+        out += glyphs[Math.floor(Math.random() * glyphs.length)];
+      }
+    }
+    el.textContent = out;
+    frame++;
+    if (frame > totalFrames) {
       clearInterval(timer);
+      el.textContent = finalText;
       if (onDone) onDone();
     }
-  }, speed);
+  }, frameRate);
 }
 
 // Highlight the nav tab matching the current page filename.

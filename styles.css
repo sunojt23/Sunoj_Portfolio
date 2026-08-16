@@ -21,10 +21,16 @@
 
 * { box-sizing: border-box; }
 
-html { scroll-behavior: smooth; }
+html { scroll-behavior: smooth; height: 100%; }
 
+/* Sticky-footer layout: main grows to fill whatever space the viewport has
+   left after the nav, so the footer always sits at the bottom edge instead
+   of floating high up under short pages. */
 body {
   margin: 0;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
   background: var(--bg);
   color: var(--text);
   font-family: var(--mono);
@@ -73,6 +79,7 @@ a { color: inherit; text-decoration: none; }
 
 /* ---------------- NAV ---------------- */
 .nav {
+  flex: 0 0 auto;
   position: sticky;
   top: 0;
   z-index: 50;
@@ -231,40 +238,73 @@ a { color: inherit; text-decoration: none; }
 }
 
 /* ---------------- LAYOUT ---------------- */
-main { max-width: var(--max-width); margin: 0 auto; padding: 0 20px; }
+main {
+  flex: 1 0 auto;
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  max-width: var(--max-width);
+  margin: 0 auto;
+  padding: 0 20px;
+}
 
+/* The intro: perfectly centered, both axes, filling whatever room is left
+   between the nav and the footer — never a tall gap above a low footer. */
 .hero {
-  min-height: min(56vh, 420px);
+  flex: 1;
   display: flex;
   flex-direction: column;
   justify-content: center;
-  padding: 32px 0;
+  align-items: center;
+  text-align: center;
+  padding: 48px 0;
 }
 
 .hero-role {
-  margin: 10px 0 0;
+  margin: 14px 0 0;
   font-size: clamp(15px, 2.4vw, 19px);
   color: var(--text-dim);
   text-transform: uppercase;
   letter-spacing: 0.16em;
-  min-height: 1.6em;
-}
-
-.hero-tagline {
-  margin: 18px 0 0;
-  font-size: clamp(14px, 1.8vw, 16px);
-  color: var(--text-faint);
-  max-width: 480px;
   opacity: 0;
+  filter: blur(8px);
+  transform: translateY(10px);
+  transition: opacity 0.8s cubic-bezier(0.22, 0.8, 0.2, 1),
+              filter 0.8s cubic-bezier(0.22, 0.8, 0.2, 1),
+              transform 0.8s cubic-bezier(0.22, 0.8, 0.2, 1);
 }
 
-.hero-tagline.show {
-  animation: tagline-in 0.7s ease forwards;
+.hero-role.show { opacity: 1; filter: blur(0); transform: translateY(0); }
+
+.hero-quote {
+  margin: 30px 0 0;
+  max-width: 420px;
+  font-size: 13.5px;
+  font-style: italic;
+  color: var(--text-faint);
+  opacity: 0;
+  filter: blur(8px);
+  transform: translateY(10px);
+  transition: opacity 0.8s cubic-bezier(0.22, 0.8, 0.2, 1),
+              filter 0.8s cubic-bezier(0.22, 0.8, 0.2, 1),
+              transform 0.8s cubic-bezier(0.22, 0.8, 0.2, 1);
 }
 
-@keyframes tagline-in {
-  from { opacity: 0; transform: translateY(4px); }
-  to { opacity: 1; transform: translateY(0); }
+.hero-quote.show { opacity: 1; filter: blur(0); transform: translateY(0); }
+
+.quote-attr {
+  display: block;
+  margin-top: 6px;
+  font-style: normal;
+  font-size: 10.5px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--text-faint);
+  opacity: 0.75;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hero-role, .hero-quote { opacity: 1; filter: none; transform: none; }
 }
 
 .section { padding: 48px 0; border-top: 1px solid var(--border); }
@@ -330,19 +370,12 @@ main { max-width: var(--max-width); margin: 0 auto; padding: 0 20px; }
 .line.result { color: var(--text-dim); }
 
 .typed-name {
-  font-size: clamp(36px, 7vw, 64px);
+  font-size: clamp(38px, 8vw, 72px);
   font-weight: 700;
   margin: 0;
   color: #fff;
   letter-spacing: -0.01em;
 }
-
-.cursor {
-  color: var(--accent);
-  animation: blink 1s step-end infinite;
-}
-
-@keyframes blink { 50% { opacity: 0; } }
 
 .summary { max-width: 640px; }
 
@@ -652,6 +685,7 @@ a.contact-item:hover { color: var(--accent-bright); text-shadow: 0 0 10px rgba(2
 
 /* ---------------- FOOTER ---------------- */
 .footer {
+  flex: 0 0 auto;
   text-align: center;
   padding: 32px 20px 48px;
   color: var(--text-faint);
