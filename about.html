@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>About — Sunoj Kumar Tomar</title>
+<meta name="description" content="About Sunoj Kumar Tomar — Data Engineer background, focus areas, and education.">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>💻</text></svg>">
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+<canvas id="rain" aria-hidden="true"></canvas>
+<div class="bg-overlay" aria-hidden="true"></div>
+
+<header class="nav">
+  <div class="nav-inner">
+    <a href="index.html" class="logo">sunoj<span class="accent">.dev</span></a>
+    <nav class="tabs" id="tabs">
+      <a href="about.html" class="tab">about.js</a>
+      <a href="skills.html" class="tab">skills.js</a>
+      <a href="experience.html" class="tab">experience.js</a>
+      <a href="projects.html" class="tab">projects.js</a>
+      <a href="contact.html" class="tab">contact.js</a>
+    </nav>
+    <button class="menu-btn" id="menuBtn" aria-label="Toggle menu">☰</button>
+  </div>
+</header>
+
+<main>
+
+  <section class="page-head">
+    <p class="path">~/sunoj-tomar $ open about.html</p>
+    <h1 class="section-title"><span class="comment">// </span>about</h1>
+  </section>
+
+  <section class="section section-noborder">
+    <div class="code-card">
+      <pre class="code-block"><code><span class="kw">const</span> <span class="var">sunoj</span> = {
+  <span class="prop">name</span>: <span class="str">"Sunoj Kumar Tomar"</span>,
+  <span class="prop">role</span>: <span class="str">"Data Engineer"</span>,
+  <span class="prop">location</span>: <span class="str">"Gurugram, India"</span>,
+  <span class="prop">experience</span>: <span class="str">"4+ years"</span>,
+  <span class="prop">focus</span>: [<span class="str">"ETL/ELT pipelines"</span>, <span class="str">"Data warehousing"</span>, <span class="str">"Automation"</span>, <span class="str">"LLM integration"</span>],
+  <span class="prop">education</span>: <span class="str">"B.Tech, Computer Science — Graphic Era University (2018–2022)"</span>,
+  <span class="prop">languages</span>: [<span class="str">"English"</span>, <span class="str">"Hindi"</span>],
+}</code></pre>
+    </div>
+    <p class="about-text">
+      I design and operate scalable data pipelines, automation workflows, and AI-driven solutions
+      using Python, SQL, PySpark, Apache Spark and Databricks. My work spans ETL/ELT framework
+      development, data migration, data warehousing on Delta Lake, data modeling, and data
+      governance across enterprise environments — plus distributed stream processing with Apache
+      Kafka and Spark Streaming alongside large-scale batch processing. I have a strong software
+      engineering foundation in CI/CD pipelines, Git, and test-driven development.
+    </p>
+    <div class="achievement">
+      <span class="badge">🏆</span>
+      <p>Recognized as <strong>"Most Consistent Performer"</strong> at Cognizant for sustained excellence
+      in delivering production-grade data engineering solutions — 99.5% SLA compliance, zero critical
+      pipeline failures across quarterly review cycles.</p>
+    </div>
+  </section>
+
+</main>
+
+<footer class="footer">
+  <p>&copy; <span id="year"></span> Sunoj Kumar Tomar. Built with HTML, CSS &amp; JS.</p>
+</footer>
+
+<script src="script.js"></script>
+</body>
+</html>

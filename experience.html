@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Experience — Sunoj Kumar Tomar</title>
+<meta name="description" content="Professional experience of Sunoj Kumar Tomar — Data Engineer at Cognizant, AI Researcher at Eurekai.">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>💻</text></svg>">
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+<canvas id="rain" aria-hidden="true"></canvas>
+<div class="bg-overlay" aria-hidden="true"></div>
+
+<header class="nav">
+  <div class="nav-inner">
+    <a href="index.html" class="logo">sunoj<span class="accent">.dev</span></a>
+    <nav class="tabs" id="tabs">
+      <a href="about.html" class="tab">about.js</a>
+      <a href="skills.html" class="tab">skills.js</a>
+      <a href="experience.html" class="tab">experience.js</a>
+      <a href="projects.html" class="tab">projects.js</a>
+      <a href="contact.html" class="tab">contact.js</a>
+    </nav>
+    <button class="menu-btn" id="menuBtn" aria-label="Toggle menu">☰</button>
+  </div>
+</header>
+
+<main>
+
+  <section class="page-head">
+    <p class="path">~/sunoj-tomar $ open experience.html</p>
+    <h1 class="section-title"><span class="comment">// </span>experience</h1>
+  </section>
+
+  <section class="section section-noborder">
+    <div class="timeline">
+
+      <div class="job">
+        <div class="job-head">
+          <h3>Data Engineer / Associate</h3>
+          <span class="job-date">Feb 2022 — Present</span>
+        </div>
+        <p class="job-meta">Cognizant Technology Solutions · Gurugram, India</p>
+        <ul class="job-list">
+          <li>Architected and optimized <strong>15+ production ETL/ELT pipelines</strong> using Python, PySpark, Spark SQL, and Databricks, processing <strong>10M+ customer records</strong> with 99.5% data delivery accuracy.</li>
+          <li>Built end-to-end cloud data migration workflows integrating ARIBA, ServiceNow, SAP and CRM systems; used Apache Kafka for real-time streaming into Delta Lake and Hive warehousing layers.</li>
+          <li>Designed data governance and quality frameworks with automated auditing, lineage tracking, and access-control policies.</li>
+          <li>Optimized Delta Lake / Hive schema design (partitioning, Z-ordering, compaction), improving query performance by <strong>45%</strong>.</li>
+          <li>Implemented CI/CD pipelines with Git for automated testing and zero-downtime deploys, cutting release cycle time by <strong>40%</strong>.</li>
+          <li>Tuned complex SQL / Databricks SQL notebooks on Delta Lake, reducing average query execution time by <strong>35%</strong>.</li>
+          <li>Built production-grade data quality dashboards in Python and Power BI for real-time SLA visibility across 4 business units.</li>
+          <li>Designed a ServiceNow-integrated NLP ticketing chatbot, automating <strong>70%</strong> of routine queries and lifting team efficiency by 35%.</li>
+          <li>Automated a weekly PySpark/Spark SQL reporting pipeline on Databricks, replacing a manual process and reclaiming <strong>3–5 hours/week</strong> of analyst time.</li>
+        </ul>
+      </div>
+
+      <div class="job">
+        <div class="job-head">
+          <h3>Artificial Intelligence Researcher</h3>
+          <span class="job-date">Nov 2021 — Jan 2022</span>
+        </div>
+        <p class="job-meta">Eurekai Co. (Portugal-based Fintech Startup) · Remote</p>
+        <ul class="job-list">
+          <li>Led data pipeline development and ML research to optimize Forex trading strategy execution — built predictive models achieving a <strong>20% increase</strong> in forecast accuracy.</li>
+          <li>Engineered ingestion/transformation workflows on Dukascopy historical Forex datasets, applying Random Forest and ensemble methods to improve trade-signal precision.</li>
+          <li>Collaborated cross-functionally, aligning algorithmic strategies with business objectives through iterative development.</li>
+        </ul>
+      </div>
+
+    </div>
+  </section>
+
+</main>
+
+<footer class="footer">
+  <p>&copy; <span id="year"></span> Sunoj Kumar Tomar. Built with HTML, CSS &amp; JS.</p>
+</footer>
+
+<script src="script.js"></script>
+</body>
+</html>
