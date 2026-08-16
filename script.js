@@ -5,7 +5,7 @@
 
 document.addEventListener("DOMContentLoaded", () => {
   typeText("typedName", "Sunoj Kumar Tomar", 45, () => {
-    typeText("typedRole", "> Data Engineer", 35);
+    typeText("typedRole", "Data Engineer", 40);
   });
 
   document.getElementById("year").textContent = new Date().getFullYear();
@@ -53,7 +53,7 @@ function initRain() {
   if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
 
   const ctx = canvas.getContext("2d");
-  const fontSize = 15;
+  const fontSize = 16;
   const chars = "01";
   let w, h, columns, drops;
 
@@ -67,15 +67,19 @@ function initRain() {
   window.addEventListener("resize", resize);
 
   function draw() {
-    ctx.fillStyle = "rgba(6, 10, 8, 0.06)";
+    // Short trail fade — visible motion without smearing into a solid haze.
+    ctx.fillStyle = "rgba(6, 10, 8, 0.045)";
     ctx.fillRect(0, 0, w, h);
     ctx.font = fontSize + "px monospace";
-    ctx.fillStyle = "rgba(51, 209, 122, 0.28)";
 
     for (let i = 0; i < columns; i++) {
       const text = chars[Math.floor(Math.random() * chars.length)];
+      // Occasional brighter "lead" glyph, like classic code-rain.
+      ctx.fillStyle = Math.random() > 0.96
+        ? "rgba(107, 255, 171, 0.65)"
+        : "rgba(51, 209, 122, 0.4)";
       ctx.fillText(text, i * fontSize, drops[i] * fontSize);
-      if (drops[i] * fontSize > h && Math.random() > 0.98) drops[i] = 0;
+      if (drops[i] * fontSize > h && Math.random() > 0.975) drops[i] = 0;
       drops[i]++;
     }
     requestAnimationFrame(draw);

@@ -37,6 +37,7 @@ body {
   font-size: 15px;
   line-height: 1.6;
   -webkit-font-smoothing: antialiased;
+  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.7);
 }
 
 a { color: inherit; text-decoration: none; }
@@ -47,7 +48,9 @@ a { color: inherit; text-decoration: none; }
 .comment { color: var(--text-faint); }
 
 /* ---------------- BACKGROUND ANIMATION ---------------- */
-/* Faint binary rain, dimmed almost to a texture — kept minimal, not decorative. */
+/* Binary rain runs full-bleed and visibly across the whole viewport. The overlay
+   is darkest directly behind the text column (readability) and fades out toward
+   the page margins, so the animation reads as prominent without fighting the copy. */
 #rain {
   position: fixed;
   inset: 0;
@@ -61,7 +64,15 @@ a { color: inherit; text-decoration: none; }
   position: fixed;
   inset: 0;
   z-index: 1;
-  background: rgba(6, 10, 8, 0.88);
+  background: linear-gradient(
+    to right,
+    rgba(6, 10, 8, 0.35) 0%,
+    rgba(6, 10, 8, 0.35) calc(50% - 500px),
+    rgba(6, 10, 8, 0.86) calc(50% - 460px),
+    rgba(6, 10, 8, 0.86) calc(50% + 460px),
+    rgba(6, 10, 8, 0.35) calc(50% + 500px),
+    rgba(6, 10, 8, 0.35) 100%
+  );
   pointer-events: none;
 }
 
@@ -135,7 +146,13 @@ a { color: inherit; text-decoration: none; }
 /* ---------------- LAYOUT ---------------- */
 main { max-width: var(--max-width); margin: 0 auto; padding: 0 20px; }
 
-.hero { padding: 64px 0 48px; }
+.hero {
+  min-height: min(62vh, 480px);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 32px 0;
+}
 
 .path {
   margin: 0 0 18px;
@@ -144,9 +161,19 @@ main { max-width: var(--max-width); margin: 0 auto; padding: 0 20px; }
   letter-spacing: 0.02em;
 }
 
+.hero-role {
+  margin: 10px 0 0;
+  font-size: clamp(15px, 2.4vw, 19px);
+  color: var(--green);
+  text-transform: uppercase;
+  letter-spacing: 0.16em;
+  min-height: 1.6em;
+}
+
 .section { padding: 56px 0; border-top: 1px solid var(--border); }
 
 .section-noborder { border-top: none; padding-top: 0; }
+.section-tight { padding-bottom: 40px; }
 
 .section-title {
   font-size: 20px;
@@ -229,9 +256,11 @@ main { max-width: var(--max-width); margin: 0 auto; padding: 0 20px; }
 .line.result { color: var(--text-dim); }
 
 .typed-name {
-  font-size: clamp(28px, 5vw, 42px);
-  margin: 4px 0 6px;
-  color: var(--text);
+  font-size: clamp(36px, 7vw, 64px);
+  font-weight: 700;
+  margin: 0;
+  color: #fff;
+  letter-spacing: -0.01em;
 }
 
 .cursor {
