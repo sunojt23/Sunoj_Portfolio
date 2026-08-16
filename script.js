@@ -24,6 +24,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
   setActiveTab();
   initRain();
+  initSkillsReveal();
 });
 
 function typeText(id, text, speed, onDone) {
@@ -89,4 +90,38 @@ function initRain() {
     requestAnimationFrame(draw);
   }
   requestAnimationFrame(draw);
+}
+
+// Skills fade + lift into place, staggered, the first time each group
+// scrolls into view. Reduced-motion users just see them appear.
+function initSkillsReveal() {
+  const groups = document.querySelectorAll(".skill-group");
+  if (!groups.length) return;
+
+  const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+  groups.forEach((group) => {
+    group.querySelectorAll(".skill-item").forEach((item, i) => {
+      item.style.setProperty("--delay", `${i * 45}ms`);
+    });
+  });
+
+  if (reduceMotion) {
+    groups.forEach((group) => group.classList.add("in-view"));
+    return;
+  }
+
+  const observer = new IntersectionObserver(
+    (entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add("in-view");
+          observer.unobserve(entry.target);
+        }
+      });
+    },
+    { threshold: 0.2, rootMargin: "0px 0px -40px 0px" }
+  );
+
+  groups.forEach((group) => observer.observe(group));
 }

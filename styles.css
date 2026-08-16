@@ -349,6 +349,34 @@ main { max-width: var(--max-width); margin: 0 auto; padding: 0 20px; }
   flex: 1 1 300px;
 }
 
+/* Each skill fades and lifts into place, staggered, the first time its
+   group scrolls into view — then stays put. Hover gives it a quiet glow. */
+.skill-item {
+  display: inline-block;
+  opacity: 0;
+  transform: translateY(7px);
+  transition: opacity 0.5s ease, transform 0.5s ease, color 0.15s ease, text-shadow 0.15s ease;
+  transition-delay: var(--delay, 0s);
+}
+
+.skill-group.in-view .skill-item {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.skill-item:hover {
+  color: var(--accent);
+  text-shadow: 0 0 10px rgba(217, 164, 65, 0.45);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .skill-item {
+    opacity: 1;
+    transform: none;
+    transition: color 0.15s ease;
+  }
+}
+
 /* ---------------- EXPERIENCE ---------------- */
 .timeline {
   display: flex;
