@@ -832,6 +832,16 @@ main {
   margin: 0 0 12px;
 }
 
+.blog-source {
+  margin-left: 6px;
+  padding-left: 10px;
+  border-left: 1px solid var(--border);
+  font-size: 11px;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--accent);
+}
+
 .blog-excerpt {
   font-size: 13.5px;
   color: var(--text-dim);
