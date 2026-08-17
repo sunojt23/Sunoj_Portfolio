@@ -53,16 +53,19 @@ function initHeroScramble() {
   const finalName = nameEl.textContent.trim();
   const role = document.querySelector(".hero-role");
   const quote = document.querySelector(".hero-quote");
+  const social = document.querySelector(".social-row");
   const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
-  if (reduceMotion) return; // leave name, role, and quote exactly as authored
+  if (reduceMotion) return; // leave name, role, quote, and social row exactly as authored
 
   if (role) hideForAnim(role);
   if (quote) hideForAnim(quote);
+  if (social) hideForAnim(social);
 
   scrambleText(nameEl, finalName, 1100, () => {
     if (role) role.classList.remove("js-anim");
     setTimeout(() => { if (quote) quote.classList.remove("js-anim"); }, 450);
+    setTimeout(() => { if (social) social.classList.remove("js-anim"); }, 800);
   });
 }
 

@@ -324,6 +324,32 @@ main {
   opacity: 0.75;
 }
 
+.social-row {
+  display: flex;
+  align-items: center;
+  gap: 22px;
+  margin-top: 34px;
+  transition: opacity 0.8s cubic-bezier(0.22, 0.8, 0.2, 1),
+              filter 0.8s cubic-bezier(0.22, 0.8, 0.2, 1),
+              transform 0.8s cubic-bezier(0.22, 0.8, 0.2, 1);
+}
+
+.social-row.js-anim { opacity: 0; filter: blur(8px); transform: translateY(10px); }
+
+.social-icon {
+  color: var(--text-faint);
+  transition: color 0.15s ease, filter 0.15s ease, transform 0.15s ease;
+}
+
+.social-icon svg { width: 19px; height: 19px; display: block; }
+
+.social-icon:hover,
+.social-icon:focus-visible {
+  color: var(--accent);
+  filter: drop-shadow(0 0 6px rgba(217, 164, 65, 0.5));
+  transform: translateY(-2px);
+}
+
 .section { padding: 48px 0; border-top: 1px solid var(--border); }
 
 .section-noborder { border-top: none; padding-top: 0; }
