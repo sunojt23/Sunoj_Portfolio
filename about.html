@@ -95,6 +95,61 @@
     </div>
   </section>
 
+  <!-- ============ QUOTES — auto-sliding, one at a time ============ -->
+  <section class="section">
+    <p class="mini-label">Notes to self</p>
+    <div class="quote-slider" id="quoteSlider">
+      <div class="quote-track" id="quoteTrack">
+        <blockquote class="quote-slide">
+          <p>"Πάντα ῥεῖ" — everything flows.</p>
+          <cite>Heraclitus</cite>
+        </blockquote>
+        <blockquote class="quote-slide">
+          <p>"Data is the new oil. It's valuable, but if unrefined it cannot really be used."</p>
+          <cite>Clive Humby</cite>
+        </blockquote>
+        <blockquote class="quote-slide">
+          <p>"What gets measured gets managed."</p>
+          <cite>Peter Drucker</cite>
+        </blockquote>
+        <blockquote class="quote-slide">
+          <p>"Perfection is achieved not when there is nothing more to add, but when there is nothing left to take away."</p>
+          <cite>Antoine de Saint-Exupéry</cite>
+        </blockquote>
+        <blockquote class="quote-slide">
+          <p>"In God we trust; all others bring data."</p>
+          <cite>W. Edwards Deming</cite>
+        </blockquote>
+      </div>
+      <div class="quote-dots" id="quoteDots"></div>
+    </div>
+  </section>
+
+  <!-- ============ LATEST WRITING — horizontal blog strip ============ -->
+  <section class="section">
+    <p class="mini-label">Latest writing</p>
+    <div class="blog-slider-wrap">
+      <button class="slider-arrow slider-arrow--prev" id="blogPrev" aria-label="Previous post">‹</button>
+      <div class="blog-slider" id="blogSlider">
+        <article class="blog-slide">
+          <h3 class="blog-title">
+            <a href="https://sunojexplains.hashnode.dev/distributedsystems" target="_blank" rel="noopener">
+              The Scaling Wall: Big Data, GFS, and the End of Sitting Idle
+            </a>
+          </h3>
+          <p class="blog-date">Apr 18, 2026</p>
+          <p class="blog-excerpt">
+            Four years on my resume, zero hands-on experience — and why I stopped sitting idle.
+            A look at how Google solved the scaling wall with GFS and MapReduce.
+          </p>
+          <a href="https://sunojexplains.hashnode.dev/distributedsystems" target="_blank" rel="noopener" class="blog-link">Read on Hashnode →</a>
+        </article>
+      </div>
+      <button class="slider-arrow slider-arrow--next" id="blogNext" aria-label="Next post">›</button>
+    </div>
+    <p class="line result"><a href="blog.html" class="accent">View all posts →</a></p>
+  </section>
+
   <!-- ============ STATS — count up when scrolled into view ============ -->
   <section class="section">
     <div class="stats-row about-reveal">

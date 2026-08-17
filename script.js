@@ -37,6 +37,8 @@ document.addEventListener("DOMContentLoaded", () => {
   initReveal(".contact-list", ".contact-item", 90);
   initStatsCounter();
   initTelegram();
+  initQuoteSlider();
+  initBlogSlider();
 });
 
 // Home page intro: the name decodes itself out of scrambled characters,
@@ -271,4 +273,90 @@ function initStatsCounter() {
   );
 
   nums.forEach((el) => observer.observe(el));
+}
+
+// One quote at a time, sliding via transform. Auto-advances on a timer,
+// pauses while hovered or focused, and is always controllable via dots —
+// so it never fights a reader who's actually trying to read one.
+function initQuoteSlider() {
+  const slider = document.getElementById("quoteSlider");
+  const track = document.getElementById("quoteTrack");
+  const dotsWrap = document.getElementById("quoteDots");
+  if (!slider || !track || !dotsWrap) return;
+
+  const slides = Array.from(track.children);
+  if (slides.length < 2) return; // nothing to slide between
+
+  const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+  let index = 0;
+  let timer = null;
+
+  slides.forEach((_, i) => {
+    const dot = document.createElement("button");
+    dot.className = "quote-dot" + (i === 0 ? " active" : "");
+    dot.setAttribute("aria-label", `Show quote ${i + 1}`);
+    dot.addEventListener("click", () => goTo(i));
+    dotsWrap.appendChild(dot);
+  });
+  const dots = Array.from(dotsWrap.children);
+
+  function goTo(i) {
+    index = (i + slides.length) % slides.length;
+    track.style.transform = `translateX(-${index * 100}%)`;
+    dots.forEach((d, di) => d.classList.toggle("active", di === index));
+  }
+
+  function next() { goTo(index + 1); }
+
+  function start() {
+    if (reduceMotion || timer) return;
+    timer = setInterval(next, 5500);
+  }
+
+  function stop() {
+    clearInterval(timer);
+    timer = null;
+  }
+
+  slider.addEventListener("mouseenter", stop);
+  slider.addEventListener("mouseleave", start);
+  slider.addEventListener("focusin", stop);
+  slider.addEventListener("focusout", start);
+
+  start();
+}
+
+// The blog strip scrolls natively (drag/swipe/wheel all just work via
+// overflow-x); the arrow buttons are a discoverability aid on top, and
+// hide themselves entirely when there's only one post to show.
+function initBlogSlider() {
+  const slider = document.getElementById("blogSlider");
+  const prevBtn = document.getElementById("blogPrev");
+  const nextBtn = document.getElementById("blogNext");
+  if (!slider || !prevBtn || !nextBtn) return;
+
+  const slides = Array.from(slider.children);
+  if (slides.length < 2) {
+    prevBtn.hidden = true;
+    nextBtn.hidden = true;
+    return;
+  }
+
+  function step() {
+    const first = slides[0];
+    return first.getBoundingClientRect().width + 28; // slide width + gap
+  }
+
+  prevBtn.addEventListener("click", () => slider.scrollBy({ left: -step(), behavior: "smooth" }));
+  nextBtn.addEventListener("click", () => slider.scrollBy({ left: step(), behavior: "smooth" }));
+
+  function updateArrows() {
+    const max = slider.scrollWidth - slider.clientWidth - 4;
+    prevBtn.style.opacity = slider.scrollLeft <= 4 ? "0.3" : "1";
+    nextBtn.style.opacity = slider.scrollLeft >= max ? "0.3" : "1";
+  }
+
+  slider.addEventListener("scroll", updateArrows, { passive: true });
+  updateArrows();
 }
