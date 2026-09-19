@@ -135,17 +135,17 @@ function initRain() {
 
   function draw() {
     // Short trail fade — visible motion without smearing into a solid haze.
-    ctx.fillStyle = "rgba(10, 10, 11, 0.045)";
+    ctx.fillStyle = "rgba(16, 13, 12, 0.045)";
     ctx.fillRect(0, 0, w, h);
     ctx.font = fontSize + "px monospace";
 
     for (let i = 0; i < columns; i++) {
       const text = chars[Math.floor(Math.random() * chars.length)];
-      // Mostly neutral gray digits, with an occasional amber "lead" glyph —
+      // Mostly neutral gray digits, with a rare, quiet terracotta glyph —
       // a single signal in the noise, matching the accent color.
-      ctx.fillStyle = Math.random() > 0.97
-        ? "rgba(240, 194, 116, 0.75)"
-        : "rgba(161, 161, 170, 0.35)";
+      ctx.fillStyle = Math.random() > 0.985
+        ? "rgba(217, 138, 95, 0.5)"
+        : "rgba(168, 154, 140, 0.22)";
       ctx.fillText(text, i * fontSize, drops[i] * fontSize);
       if (drops[i] * fontSize > h && Math.random() > 0.975) drops[i] = 0;
       drops[i]++;
