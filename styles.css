@@ -857,6 +857,42 @@ main {
 
 .blog-link:hover { color: var(--accent-bright); text-shadow: 0 0 10px rgba(217, 164, 65, 0.4); }
 
+/* ---------------- TAKES ---------------- */
+.takes-list {
+  display: flex;
+  flex-direction: column;
+  gap: 26px;
+}
+
+.take {
+  padding-bottom: 26px;
+  border-bottom: 1px solid var(--border);
+  transition: opacity 0.8s cubic-bezier(0.22, 0.8, 0.2, 1),
+              filter 0.8s cubic-bezier(0.22, 0.8, 0.2, 1),
+              transform 0.8s cubic-bezier(0.22, 0.8, 0.2, 1);
+  transition-delay: var(--delay, 0s);
+}
+
+.take.js-anim { opacity: 0; filter: blur(8px); transform: translateY(14px); }
+
+.take:last-child { border-bottom: none; padding-bottom: 0; }
+
+.take-date {
+  margin: 0 0 8px;
+  font-size: 11px;
+  color: var(--text-faint);
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+}
+
+.take-text {
+  margin: 0;
+  font-size: 15px;
+  line-height: 1.6;
+  color: var(--text);
+  max-width: 620px;
+}
+
 /* ---------------- CONTACT — vintage telegram ---------------- */
 /* A double-ruled frame, all-caps teletype voice, STOP for punctuation —
    the message types itself out the first time it scrolls into view. */

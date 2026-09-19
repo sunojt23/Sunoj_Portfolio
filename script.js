@@ -34,6 +34,7 @@ document.addEventListener("DOMContentLoaded", () => {
   initReveal(".about-reveal", ".reveal-line, .fact, .stat", 110);
   initReveal(".timeline", ".job", 150);
   initReveal(".blog-list", ".blog-post", 150);
+  initReveal(".takes-list", ".take", 130);
   initReveal(".contact-list", ".contact-item", 90);
   initStatsCounter();
   initTelegram();
