@@ -532,6 +532,19 @@ main {
   letter-spacing: 0.18em;
 }
 
+/* A small numbered eyebrow above each entry in a list — Experience, Projects,
+   Blog — inspired by the "01 / project name" convention common to case-study
+   portfolios. Just a quiet count, not a page number or a replacement image. */
+.entry-num {
+  margin: 0 0 10px;
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--accent);
+  letter-spacing: 0.14em;
+}
+
+.entry-num::after { content: " /"; color: var(--text-faint); font-weight: 400; }
+
 /* ---------------- QUOTE SLIDER ---------------- */
 /* One quote at a time, sliding — auto-advances, pauses on hover/focus,
    always controllable via the dots. */
@@ -691,7 +704,7 @@ main {
 .timeline {
   display: flex;
   flex-direction: column;
-  gap: 36px;
+  gap: 52px;
 }
 
 .job {
@@ -766,7 +779,7 @@ main {
 .projects-list {
   display: flex;
   flex-direction: column;
-  gap: 32px;
+  gap: 48px;
 }
 
 .project {
@@ -810,7 +823,7 @@ main {
 .blog-list {
   display: flex;
   flex-direction: column;
-  gap: 32px;
+  gap: 48px;
 }
 
 .blog-post {
