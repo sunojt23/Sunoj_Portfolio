@@ -915,43 +915,35 @@ main {
   max-width: 620px;
 }
 
-/* ---------------- CONTACT — vintage telegram ---------------- */
-/* A double-ruled frame, all-caps teletype voice, STOP for punctuation —
-   the message types itself out the first time it scrolls into view. */
-/* A soft single rule, not a hard-edged box — it should read as a faint
-   watermark of a frame, not a card sitting on top of the page. */
-.telegram {
-  position: relative;
-  padding: 30px 34px;
-  max-width: 620px;
-  border: 1px solid rgba(242, 236, 228, 0.09);
-  box-shadow: inset 0 0 40px rgba(0, 0, 0, 0.5);
-  border-radius: 2px;
+/* ---------------- CONTACT ---------------- */
+/* One clear sentence of intent, one unmistakable primary action (email),
+   everything else secondary — hierarchy over novelty. */
+.contact-primary {
+  display: inline-flex;
+  align-items: baseline;
+  gap: 12px;
+  font-family: var(--display);
+  font-weight: 600;
+  font-size: clamp(22px, 4vw, 34px);
+  color: var(--text);
+  border-bottom: 1px solid var(--border);
+  padding-bottom: 10px;
+  transition: color 0.2s ease, border-color 0.2s ease;
 }
 
-.telegram-label {
-  margin: 0 0 18px;
-  font-size: 11px;
-  letter-spacing: 0.3em;
+.contact-primary-arrow {
+  font-family: var(--mono);
   color: var(--accent);
-  text-align: center;
+  font-size: 0.6em;
+  transition: transform 0.2s ease;
 }
 
-.telegram-body {
-  margin: 0;
-  font-size: 14px;
-  line-height: 1.9;
-  letter-spacing: 0.02em;
-  text-transform: uppercase;
-  color: var(--text-dim);
+.contact-primary:hover {
+  color: var(--accent-bright);
+  border-color: var(--accent-dim);
 }
 
-.telegram-cursor {
-  color: var(--accent);
-  animation: telegram-blink 1s step-end infinite;
-}
-
-@keyframes telegram-blink { 50% { opacity: 0; } }
+.contact-primary:hover .contact-primary-arrow { transform: translateX(4px); }
 
 .contact-list {
   display: flex;
@@ -983,13 +975,8 @@ a.contact-item:hover { color: var(--accent-bright); text-shadow: 0 0 5px rgba(18
   min-width: 70px;
 }
 
-@media (max-width: 500px) {
-  .telegram { padding: 24px 20px; }
-}
-
 @media (prefers-reduced-motion: reduce) {
   .timeline.in-view .job::before { animation: none; }
-  .telegram-cursor { animation: none; }
 }
 
 /* ---------------- FOOTER ---------------- */

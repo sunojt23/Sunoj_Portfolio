@@ -37,7 +37,6 @@ document.addEventListener("DOMContentLoaded", () => {
   initReveal(".takes-list", ".take", 130);
   initReveal(".contact-list", ".contact-item", 90);
   initStatsCounter();
-  initTelegram();
   initQuoteSlider();
   initBlogSlider();
 });
@@ -194,49 +193,6 @@ function initReveal(containerSelector, itemSelector, staggerMs) {
   containers.forEach((container) => observer.observe(container));
 }
 
-// The telegram message types itself out, teletype-style, the first time it
-// scrolls into view — a different animation identity from the home page's
-// scramble, fitting the vintage voice of this one page. The full message
-// stays in the HTML the whole time; only the observer callback below ever
-// clears it, right as typing is about to start, so it's never blank while
-// waiting on the scroll trigger.
-function initTelegram() {
-  const el = document.getElementById("telegramBody");
-  if (!el) return;
-
-  const finalText = el.textContent.trim();
-  const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-  if (reduceMotion) return; // leave the authored text as-is
-
-  const observer = new IntersectionObserver(
-    (entries) => {
-      entries.forEach((entry) => {
-        if (!entry.isIntersecting) return;
-        observer.unobserve(entry.target);
-
-        el.textContent = "";
-        const cursor = document.createElement("span");
-        cursor.className = "telegram-cursor";
-        cursor.textContent = "▌";
-
-        let i = 0;
-        const speed = 26;
-        const timer = setInterval(() => {
-          el.textContent = finalText.slice(0, i + 1);
-          el.appendChild(cursor);
-          i++;
-          if (i >= finalText.length) {
-            clearInterval(timer);
-            setTimeout(() => cursor.remove(), 1000);
-          }
-        }, speed);
-      });
-    },
-    { threshold: 0.3 }
-  );
-
-  observer.observe(el);
-}
 
 // Stat numbers count up from zero the first time they scroll into view.
 // Each one keeps its real, final text until the moment it actually starts
