@@ -34,7 +34,6 @@ document.addEventListener("DOMContentLoaded", () => {
   initReveal(".about-reveal", ".reveal-line, .fact, .stat", 110);
   initReveal(".timeline", ".job", 150);
   initReveal(".blog-list", ".blog-post", 150);
-  initReveal(".takes-list", ".take", 130);
   initReveal(".contact-list", ".contact-item", 90);
   initStatsCounter();
   initQuoteSlider();
@@ -510,8 +509,7 @@ function initPalette() {
     { label: "Skills",      tag: "Page", keys: "skills stack tools tech", run: () => { location.href = "skills.html"; } },
     { label: "Experience",  tag: "Page", keys: "experience work jobs cognizant eurekai", run: () => { location.href = "experience.html"; } },
     { label: "Projects",    tag: "Page", keys: "projects rag forecasting inventory",     run: () => { location.href = "projects.html"; } },
-    { label: "Blog",        tag: "Page", keys: "blog writing posts substack hashnode",   run: () => { location.href = "blog.html"; } },
-    { label: "Takes",       tag: "Page", keys: "takes notes opinions",    run: () => { location.href = "takes.html"; } },
+    { label: "Blog",        tag: "Page", keys: "blog writing posts hashnode",   run: () => { location.href = "blog.html"; } },
     { label: "Contact",     tag: "Page", keys: "contact hire email reach", run: () => { location.href = "contact.html"; } },
     { label: "Download résumé", tag: "Action", keys: "resume cv pdf download", run: () => {
         const a = document.createElement("a");
@@ -522,7 +520,7 @@ function initPalette() {
       } },
     { label: "Open GitHub",   tag: "Link", keys: "github code repos", run: () => window.open("https://github.com/sunojt23", "_blank", "noopener") },
     { label: "Open LinkedIn", tag: "Link", keys: "linkedin profile",  run: () => window.open("https://linkedin.com/in/sunojkumartomar", "_blank", "noopener") },
-    { label: "Open Substack", tag: "Link", keys: "substack newsletter writing", run: () => window.open("https://substack.com/@sunojtomar", "_blank", "noopener") },
+    { label: "Open Hashnode blog", tag: "Link", keys: "hashnode blog writing articles", run: () => window.open("https://sunojexplains.hashnode.dev", "_blank", "noopener") },
   ];
 
   const overlay = document.createElement("div");
