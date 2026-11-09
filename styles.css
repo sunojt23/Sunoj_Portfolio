@@ -354,6 +354,50 @@ main {
   transform: translateY(-1px);
 }
 
+/* A quiet status line under the icons — says what recruiters want to know
+   without adding anything to the minimal hero. Links to Contact. */
+.availability {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  margin-top: 26px;
+  font-size: 12.5px;
+  letter-spacing: 0.04em;
+  color: var(--text-faint);
+  transition: color 0.2s ease, opacity 0.8s cubic-bezier(0.22, 0.8, 0.2, 1),
+              filter 0.8s cubic-bezier(0.22, 0.8, 0.2, 1), transform 0.8s cubic-bezier(0.22, 0.8, 0.2, 1);
+}
+
+.availability.js-anim { opacity: 0; filter: blur(4px); transform: translateY(6px); }
+.availability:hover, .availability:focus-visible { color: var(--accent-bright); }
+
+.avail-dot {
+  position: relative;
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: var(--accent);
+}
+
+.avail-dot::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  background: var(--accent);
+  animation: avail-pulse 2.6s ease-out infinite;
+}
+
+@keyframes avail-pulse {
+  0%   { transform: scale(1);   opacity: 0.55; }
+  70%  { transform: scale(2.9); opacity: 0; }
+  100% { transform: scale(2.9); opacity: 0; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .avail-dot::after { animation: none; display: none; }
+}
+
 .section { padding: 48px 0; border-top: 1px solid var(--border); }
 
 .section-noborder { border-top: none; padding-top: 0; }
@@ -1264,4 +1308,47 @@ button.skill-item {
   .section { padding: 36px 0; }
   .skill-group { flex-direction: column; gap: 6px; }
   .skill-group h3 { flex: none; }
+}
+
+/* ---------------- PRINT ---------------- */
+/* Any page prints as a clean, ink-friendly document: light theme, no
+   background animation or controls, and everything visible — including
+   content that scroll-reveal hasn't shown yet. */
+@media print {
+  @page { margin: 16mm; }
+
+  :root {
+    --bg: #ffffff;
+    --border: #d4d0cb;
+    --text: #141210;
+    --text-dim: #3b3631;
+    --text-faint: #6b645c;
+    --accent: #8a4a2c;
+    --accent-bright: #8a4a2c;
+    --accent-dim: #b98a74;
+  }
+
+  *, *::before, *::after {
+    animation: none !important;
+    transition: none !important;
+    text-shadow: none !important;
+    box-shadow: none !important;
+  }
+
+  body { min-height: 0; display: block; font-size: 11.5pt; background: #fff; }
+  main { display: block; max-width: none; padding: 0; }
+  .typed-name { color: #000; }
+  .hero { min-height: 0; padding: 12mm 0; }
+
+  /* Interactive and decorative furniture that means nothing on paper. */
+  #rain, .bg-overlay, .nav, .palette, .toast, .palette-hint, .copy-btn,
+  .skill-evidence, .flow, .slider-arrow, .quote-slider, .availability,
+  .social-row { display: none !important; }
+
+  /* Scroll-reveal hides things until they're seen; on paper show them all. */
+  .js-anim { opacity: 1 !important; filter: none !important; transform: none !important; }
+
+  .skill-item.has-ev { text-decoration: none; }
+  .job, .project, .skill-group, .fact, .blog-post, .stat { break-inside: avoid; }
+  .footer { border-top-color: var(--border); padding: 8mm 0 0; }
 }
