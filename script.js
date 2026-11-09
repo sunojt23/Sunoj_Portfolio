@@ -519,7 +519,7 @@ function initPalette() {
         showToast((await copyText(SITE_EMAIL)) ? "Email copied" : "Couldn't copy — select it manually");
       } },
     { label: "Open GitHub",   tag: "Link", keys: "github code repos", run: () => window.open("https://github.com/sunojt23", "_blank", "noopener") },
-    { label: "Open LinkedIn", tag: "Link", keys: "linkedin profile",  run: () => window.open("https://linkedin.com/in/sunojkumartomar", "_blank", "noopener") },
+    { label: "Open LinkedIn", tag: "Link", keys: "linkedin profile",  run: () => window.open("https://www.linkedin.com/in/sunojtomar23/", "_blank", "noopener") },
     { label: "Open Hashnode blog", tag: "Link", keys: "hashnode blog writing articles", run: () => window.open("https://sunojexplains.hashnode.dev", "_blank", "noopener") },
   ];
 
