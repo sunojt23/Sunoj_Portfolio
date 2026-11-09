@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Projects — Sunoj Kumar Tomar</title>
-<meta name="description" content="Projects by Sunoj Kumar Tomar — Inventory Management & Demand Forecasting System.">
+<meta name="description" content="Projects by Sunoj Kumar Tomar — a ServiceNow AI Resolution Assistant built with RAG, and an Inventory Management & Demand Forecasting pipeline.">
 <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>💻</text></svg>">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -41,21 +41,64 @@
 
   <section class="section section-noborder">
     <div class="projects-list">
-      <div class="project">
+
+      <div class="project" id="rag">
         <p class="entry-num">01</p>
         <div class="project-head">
-          <h3>Inventory Management &amp; Demand Forecasting System</h3>
+          <h3>ServiceNow AI Resolution Assistant (RAG)</h3>
         </div>
-        <p class="project-date">Personal Project · Sep 2023 — Nov 2023</p>
+        <p class="project-date">Applied GenAI project</p>
         <p class="project-desc">
-          A data-driven inventory pipeline identifying optimal safety-stock levels and reorder points,
-          reducing stockouts by 30%. Built and benchmarked ETL workflows feeding Prophet and ARIMA
-          forecasting models for SKU-level demand prediction, achieving a 20% improvement in accuracy
-          via MAPE-based evaluation. Visualization layers in Matplotlib/Seaborn surfaced seasonal
-          demand patterns to drive inventory-optimization decisions.
+          An end-to-end RAG assistant that retrieves relevant historical ServiceNow tickets and generates
+          contextual resolution recommendations for incoming support requests. Past tickets are ingested,
+          preprocessed, embedded, and vector-indexed into a searchable knowledge base; an LLM then answers
+          from the retrieved context, keeping responses grounded — reducing repetitive manual triage and
+          automating roughly <strong>70%</strong> of routine ticket queries.
         </p>
-        <p class="project-stack">Stack: <span>Python, Pandas, NumPy, Prophet, ARIMA, Matplotlib, Seaborn</span></p>
+        <p class="project-stack">Stack: <span>Python, OpenAI Embeddings, Vector Search, RAG, LLM</span></p>
+
+        <div class="flow" data-flow>
+          <p class="flow-label"><span>How it works — pick a step</span><button type="button" class="flow-play">▸ Play</button></p>
+          <ol class="flow-steps">
+            <li><button type="button" class="flow-step" data-detail="Historical ServiceNow tickets are ingested as the source documents for the knowledge base.">Ingest</button></li>
+            <li><button type="button" class="flow-step" data-detail="Raw ticket text is preprocessed so it can be embedded cleanly.">Preprocess</button></li>
+            <li><button type="button" class="flow-step" data-detail="OpenAI embeddings turn each ticket into a vector that captures its meaning.">Embed</button></li>
+            <li><button type="button" class="flow-step" data-detail="The vectors are indexed, turning years of tickets into a searchable knowledge base.">Index</button></li>
+            <li><button type="button" class="flow-step" data-detail="An incoming request is matched semantically against the index to pull the most relevant past tickets.">Retrieve</button></li>
+            <li><button type="button" class="flow-step" data-detail="An LLM answers using the retrieved tickets as context, so recommendations are grounded in what actually worked — automating roughly 70% of routine queries.">Generate</button></li>
+          </ol>
+          <p class="flow-detail" aria-live="polite"></p>
+        </div>
       </div>
+
+      <div class="project" id="inventory">
+        <p class="entry-num">02</p>
+        <div class="project-head">
+          <h3>Inventory Management &amp; Demand Forecasting</h3>
+        </div>
+        <p class="project-date">2023</p>
+        <p class="project-desc">
+          A Python ETL pipeline that ingests sales and inventory data from SAP over a REST API, then cleans,
+          transforms, and engineers demand features — seasonality, trend, and reorder signals — for SKU-level
+          forecasting. Prophet and ARIMA were benchmarked with MAPE-based evaluation to select the best
+          forecast, improving accuracy by <strong>20%</strong> and identifying safety-stock and reorder points
+          that cut stockouts by <strong>30%</strong>, with Matplotlib/Seaborn visuals of seasonal demand patterns.
+        </p>
+        <p class="project-stack">Stack: <span>Python, REST APIs, Pandas, NumPy, Prophet, ARIMA, Matplotlib, Seaborn</span></p>
+
+        <div class="flow" data-flow>
+          <p class="flow-label"><span>How it works — pick a step</span><button type="button" class="flow-play">▸ Play</button></p>
+          <ol class="flow-steps">
+            <li><button type="button" class="flow-step" data-detail="Sales and inventory data is pulled from SAP through a REST API.">Ingest</button></li>
+            <li><button type="button" class="flow-step" data-detail="The ETL pipeline in Python (Pandas, NumPy) cleans and transforms the raw records.">Clean &amp; transform</button></li>
+            <li><button type="button" class="flow-step" data-detail="Demand features are engineered for SKU-level forecasting: seasonality, trend, and reorder signals.">Features</button></li>
+            <li><button type="button" class="flow-step" data-detail="Prophet and ARIMA are benchmarked with MAPE-based evaluation to select the best forecast — a 20% accuracy improvement.">Forecast</button></li>
+            <li><button type="button" class="flow-step" data-detail="Safety-stock and reorder points are identified, reducing stockouts by 30%; Matplotlib/Seaborn visuals show seasonal demand patterns.">Decide</button></li>
+          </ol>
+          <p class="flow-detail" aria-live="polite"></p>
+        </div>
+      </div>
+
     </div>
   </section>
 

@@ -39,6 +39,10 @@ document.addEventListener("DOMContentLoaded", () => {
   initStatsCounter();
   initQuoteSlider();
   initBlogSlider();
+  initSkillEvidence();
+  initFlows();
+  initCopyButtons();
+  initPalette();
 });
 
 // Home page intro: the name decodes itself out of scrambled characters,
@@ -319,4 +323,319 @@ function initBlogSlider() {
 
   slider.addEventListener("scroll", updateArrows, { passive: true });
   updateArrows();
+}
+
+
+// ===================================================
+// Interactive pieces
+// ===================================================
+
+// --- small shared helpers -------------------------------------------------
+
+function showToast(message) {
+  let toast = document.getElementById("toast");
+  if (!toast) {
+    toast = document.createElement("div");
+    toast.id = "toast";
+    toast.className = "toast";
+    toast.setAttribute("role", "status");
+    document.body.appendChild(toast);
+  }
+  toast.textContent = message;
+  // restart the transition even if a toast is already showing
+  toast.classList.remove("show");
+  void toast.offsetWidth;
+  toast.classList.add("show");
+  clearTimeout(toast._hide);
+  toast._hide = setTimeout(() => toast.classList.remove("show"), 1900);
+}
+
+// Clipboard API needs a secure context (https / localhost); fall back to the
+// older execCommand route so "copy" still works anywhere it reasonably can.
+async function copyText(text) {
+  try {
+    await navigator.clipboard.writeText(text);
+    return true;
+  } catch (_) {
+    const ta = document.createElement("textarea");
+    ta.value = text;
+    ta.setAttribute("readonly", "");
+    ta.style.cssText = "position:fixed;top:0;left:0;opacity:0";
+    document.body.appendChild(ta);
+    ta.select();
+    let ok = false;
+    try { ok = document.execCommand("copy"); } catch (_) { /* ignore */ }
+    ta.remove();
+    return ok;
+  }
+}
+
+const SITE_EMAIL = "sunojtomar23@gmail.com";
+const RESUME_PATH = "assets/Sunoj_Kumar_Tomar_Resume.pdf";
+
+// --- Skills: click a skill, see where it was used --------------------------
+// Only skills the CV actually shows in use are clickable; the rest stay plain,
+// so nothing here claims more than the CV does.
+const SKILL_EVIDENCE = {
+  rag:       { where: "Project",    label: "ServiceNow AI Resolution Assistant", href: "projects.html#rag" },
+  inventory: { where: "Project",    label: "Inventory Management & Demand Forecasting", href: "projects.html#inventory" },
+  cognizant: { where: "Experience", label: "Cognizant — Data Engineer", href: "experience.html#cognizant" },
+  eurekai:   { where: "Experience", label: "Eurekai — AI Researcher", href: "experience.html#eurekai" },
+};
+
+function initSkillEvidence() {
+  const panel = document.getElementById("skillEvidence");
+  if (!panel) return;
+
+  const hint = panel.innerHTML;
+  const buttons = Array.from(document.querySelectorAll(".skill-item.has-ev"));
+  let current = null;
+
+  function reset() {
+    current = null;
+    panel.innerHTML = hint;
+    panel.classList.remove("active");
+    buttons.forEach((b) => b.setAttribute("aria-pressed", "false"));
+  }
+
+  function show(btn) {
+    current = btn;
+    buttons.forEach((b) => b.setAttribute("aria-pressed", String(b === btn)));
+    panel.classList.add("active");
+    panel.textContent = "";
+
+    const name = document.createElement("span");
+    name.className = "ev-skill";
+    name.textContent = btn.textContent;
+    panel.appendChild(name);
+
+    btn.dataset.ev.split(/\s+/).filter((k) => SKILL_EVIDENCE[k]).forEach((key) => {
+      const ev = SKILL_EVIDENCE[key];
+      const link = document.createElement("a");
+      link.href = ev.href;
+      const where = document.createElement("span");
+      where.className = "ev-where";
+      where.textContent = ev.where;
+      link.appendChild(where);
+      link.appendChild(document.createTextNode(ev.label + " →"));
+      panel.appendChild(link);
+    });
+  }
+
+  buttons.forEach((btn) => {
+    btn.addEventListener("click", () => (current === btn ? reset() : show(btn)));
+  });
+}
+
+// --- Projects: a clickable (and playable) walkthrough of each pipeline -----
+function initFlows() {
+  const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+  document.querySelectorAll("[data-flow]").forEach((flow) => {
+    const steps = Array.from(flow.querySelectorAll(".flow-step"));
+    const detail = flow.querySelector(".flow-detail");
+    const playBtn = flow.querySelector(".flow-play");
+    if (!steps.length || !detail) return;
+
+    let timer = null;
+    let index = 0;
+
+    function select(i) {
+      index = i;
+      steps.forEach((step, si) => {
+        step.classList.toggle("active", si === i);
+        step.setAttribute("aria-pressed", String(si === i));
+        step.parentElement.classList.toggle("done", si < i);
+      });
+      detail.textContent = steps[i].dataset.detail || "";
+    }
+
+    function stop() {
+      clearInterval(timer);
+      timer = null;
+      if (playBtn) playBtn.textContent = "▸ Play";
+    }
+
+    function play() {
+      if (timer) return stop();
+      if (index >= steps.length - 1) select(0);
+      if (playBtn) playBtn.textContent = "❚❚ Pause";
+      timer = setInterval(() => {
+        if (index >= steps.length - 1) return stop();
+        select(index + 1);
+      }, reduceMotion ? 2600 : 1700);
+    }
+
+    steps.forEach((step, i) => step.addEventListener("click", () => { stop(); select(i); }));
+    if (playBtn) playBtn.addEventListener("click", play);
+
+    // Left/Right arrows move between steps while one is focused.
+    flow.addEventListener("keydown", (e) => {
+      const at = steps.indexOf(document.activeElement);
+      if (at === -1 || (e.key !== "ArrowRight" && e.key !== "ArrowLeft")) return;
+      e.preventDefault();
+      const next = Math.min(steps.length - 1, Math.max(0, at + (e.key === "ArrowRight" ? 1 : -1)));
+      stop();
+      select(next);
+      steps[next].focus();
+    });
+
+    select(0);
+  });
+}
+
+// --- Contact: one-click copy ------------------------------------------------
+function initCopyButtons() {
+  document.querySelectorAll("[data-copy]").forEach((btn) => {
+    const label = btn.textContent;
+    btn.addEventListener("click", async () => {
+      const ok = await copyText(btn.dataset.copy);
+      showToast(ok ? "Email copied" : "Couldn't copy — select it manually");
+      if (!ok) return;
+      btn.textContent = "Copied ✓";
+      btn.classList.add("copied");
+      setTimeout(() => { btn.textContent = label; btn.classList.remove("copied"); }, 1600);
+    });
+  });
+}
+
+// --- Quick-jump palette: Cmd/Ctrl + K, from any page -------------------------
+function initPalette() {
+  const isMac = /Mac|iPhone|iPad/i.test(navigator.platform || navigator.userAgent || "");
+  const modKey = isMac ? "⌘" : "Ctrl";
+
+  const commands = [
+    { label: "Home",        tag: "Page", keys: "home intro start",        run: () => { location.href = "index.html"; } },
+    { label: "About",       tag: "Page", keys: "about me bio education",  run: () => { location.href = "about.html"; } },
+    { label: "Skills",      tag: "Page", keys: "skills stack tools tech", run: () => { location.href = "skills.html"; } },
+    { label: "Experience",  tag: "Page", keys: "experience work jobs cognizant eurekai", run: () => { location.href = "experience.html"; } },
+    { label: "Projects",    tag: "Page", keys: "projects rag forecasting inventory",     run: () => { location.href = "projects.html"; } },
+    { label: "Blog",        tag: "Page", keys: "blog writing posts substack hashnode",   run: () => { location.href = "blog.html"; } },
+    { label: "Takes",       tag: "Page", keys: "takes notes opinions",    run: () => { location.href = "takes.html"; } },
+    { label: "Contact",     tag: "Page", keys: "contact hire email reach", run: () => { location.href = "contact.html"; } },
+    { label: "Download résumé", tag: "Action", keys: "resume cv pdf download", run: () => {
+        const a = document.createElement("a");
+        a.href = RESUME_PATH; a.download = ""; document.body.appendChild(a); a.click(); a.remove();
+      } },
+    { label: "Copy email address", tag: "Action", keys: "copy email mail", run: async () => {
+        showToast((await copyText(SITE_EMAIL)) ? "Email copied" : "Couldn't copy — select it manually");
+      } },
+    { label: "Open GitHub",   tag: "Link", keys: "github code repos", run: () => window.open("https://github.com/sunojt23", "_blank", "noopener") },
+    { label: "Open LinkedIn", tag: "Link", keys: "linkedin profile",  run: () => window.open("https://linkedin.com/in/sunojkumartomar", "_blank", "noopener") },
+    { label: "Open Substack", tag: "Link", keys: "substack newsletter writing", run: () => window.open("https://substack.com/@sunojtomar", "_blank", "noopener") },
+  ];
+
+  const overlay = document.createElement("div");
+  overlay.className = "palette";
+  overlay.hidden = true;
+  overlay.innerHTML =
+    '<div class="palette-panel" role="dialog" aria-modal="true" aria-label="Quick jump">' +
+      '<input class="palette-input" type="text" role="combobox" aria-expanded="true" aria-controls="paletteList" ' +
+        'aria-label="Search pages and actions" placeholder="Jump to a page or action…" autocomplete="off" spellcheck="false">' +
+      '<ul class="palette-list" id="paletteList" role="listbox"></ul>' +
+      '<p class="palette-foot"><span><kbd>↑</kbd> <kbd>↓</kbd> move</span><span><kbd>↵</kbd> open</span><span><kbd>esc</kbd> close</span></p>' +
+    '</div>';
+  document.body.appendChild(overlay);
+
+  const input = overlay.querySelector(".palette-input");
+  const list = overlay.querySelector(".palette-list");
+  let results = commands;
+  let active = 0;
+  let lastFocus = null;
+
+  function render() {
+    list.textContent = "";
+    if (!results.length) {
+      const empty = document.createElement("li");
+      empty.className = "palette-empty";
+      empty.textContent = "Nothing matches that.";
+      list.appendChild(empty);
+      input.removeAttribute("aria-activedescendant");
+      return;
+    }
+    results.forEach((cmd, i) => {
+      const li = document.createElement("li");
+      li.className = "palette-item";
+      li.id = "palette-opt-" + i;
+      li.setAttribute("role", "option");
+      li.setAttribute("aria-selected", String(i === active));
+      const name = document.createElement("span");
+      name.textContent = cmd.label;
+      const tag = document.createElement("span");
+      tag.className = "palette-tag";
+      tag.textContent = cmd.tag;
+      li.append(name, tag);
+      li.addEventListener("mousemove", () => { if (active !== i) { active = i; render(); } });
+      li.addEventListener("click", () => choose(i));
+      list.appendChild(li);
+    });
+    input.setAttribute("aria-activedescendant", "palette-opt-" + active);
+    const el = list.children[active];
+    if (el && el.scrollIntoView) el.scrollIntoView({ block: "nearest" });
+  }
+
+  function filter() {
+    const tokens = input.value.toLowerCase().split(/\s+/).filter(Boolean);
+    results = commands.filter((c) => {
+      const hay = (c.label + " " + c.keys + " " + c.tag).toLowerCase();
+      return tokens.every((t) => hay.includes(t));
+    });
+    active = 0;
+    render();
+  }
+
+  function open() {
+    if (!overlay.hidden) return;
+    lastFocus = document.activeElement;
+    overlay.hidden = false;
+    input.value = "";
+    filter();
+    input.focus();
+  }
+
+  function close() {
+    if (overlay.hidden) return;
+    overlay.hidden = true;
+    if (lastFocus && lastFocus.focus) lastFocus.focus();
+  }
+
+  function choose(i) {
+    const cmd = results[i];
+    if (!cmd) return;
+    close();
+    cmd.run();
+  }
+
+  input.addEventListener("input", filter);
+  input.addEventListener("keydown", (e) => {
+    if (e.key === "ArrowDown") { e.preventDefault(); if (results.length) { active = (active + 1) % results.length; render(); } }
+    else if (e.key === "ArrowUp") { e.preventDefault(); if (results.length) { active = (active - 1 + results.length) % results.length; render(); } }
+    else if (e.key === "Enter") { e.preventDefault(); choose(active); }
+    else if (e.key === "Escape") { e.preventDefault(); close(); }
+    else if (e.key === "Tab") { e.preventDefault(); } // keep focus inside the dialog
+  });
+
+  overlay.addEventListener("mousedown", (e) => { if (e.target === overlay) close(); });
+
+  document.addEventListener("keydown", (e) => {
+    if ((e.metaKey || e.ctrlKey) && e.key.toLowerCase() === "k") {
+      e.preventDefault();
+      overlay.hidden ? open() : close();
+    } else if (e.key === "Escape" && !overlay.hidden) {
+      close();
+    }
+  });
+
+  // A quiet footer hint — also the way in on touch devices, where there's no keyboard.
+  const footer = document.querySelector(".footer");
+  if (footer) {
+    const wrap = document.createElement("div");
+    const btn = document.createElement("button");
+    btn.type = "button";
+    btn.className = "palette-hint";
+    btn.innerHTML = "Quick jump <kbd>" + modKey + " K</kbd>";
+    btn.addEventListener("click", open);
+    wrap.appendChild(btn);
+    footer.appendChild(wrap);
+  }
 }
