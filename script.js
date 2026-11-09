@@ -39,6 +39,7 @@ document.addEventListener("DOMContentLoaded", () => {
   initQuoteSlider();
   initBlogSlider();
   initSkillEvidence();
+  initSkillFinder();
   initFlows();
   initCopyButtons();
   initPalette();
@@ -639,4 +640,57 @@ function initPalette() {
     wrap.appendChild(btn);
     footer.appendChild(wrap);
   }
+}
+
+
+// --- Skills: keyword finder -------------------------------------------------
+// Type a keyword and matching skills light up while everything else dims.
+// Every token has to match (so "aws glue" finds Glue, not all of AWS), and it
+// searches the chip text, the group name, and a few aliases like ADF.
+function initSkillFinder() {
+  const input = document.getElementById("skillFinder");
+  const result = document.getElementById("finderResult");
+  const list = document.querySelector(".skills-list");
+  if (!input || !result || !list) return;
+
+  const groups = Array.from(list.querySelectorAll(".skill-group"));
+  const chips = Array.from(list.querySelectorAll(".skill-item"));
+  const haystack = new Map(chips.map((chip) => {
+    const group = chip.closest(".skill-group").querySelector("h3").textContent;
+    return [chip, (chip.textContent + " " + (chip.dataset.alias || "") + " " + group).toLowerCase()];
+  }));
+
+  function run() {
+    const tokens = input.value.toLowerCase().split(/\s+/).filter(Boolean);
+    list.classList.toggle("is-finding", tokens.length > 0);
+    result.textContent = "";
+
+    if (!tokens.length) {
+      chips.forEach((c) => c.classList.remove("match", "dim"));
+      groups.forEach((g) => g.classList.remove("is-muted"));
+      return;
+    }
+
+    const found = new Set(); // distinct skills (Delta Lake sits in two groups)
+    chips.forEach((chip) => {
+      const ok = tokens.every((t) => haystack.get(chip).includes(t));
+      chip.classList.toggle("match", ok);
+      chip.classList.toggle("dim", !ok);
+      if (ok) found.add(chip.textContent.trim().toLowerCase());
+    });
+    groups.forEach((g) => g.classList.toggle("is-muted", !g.querySelector(".skill-item.match")));
+
+    if (found.size) {
+      const n = document.createElement("strong");
+      n.textContent = String(found.size);
+      result.append(n, found.size === 1 ? " skill matches." : " skills match.");
+    } else {
+      result.textContent = "Not on my skills list — it may still appear in Projects or Experience.";
+    }
+  }
+
+  input.addEventListener("input", run);
+  input.addEventListener("keydown", (e) => {
+    if (e.key === "Escape" && input.value) { e.preventDefault(); input.value = ""; run(); }
+  });
 }

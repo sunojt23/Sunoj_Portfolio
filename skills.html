@@ -55,40 +55,66 @@
   </section>
 
   <section class="section section-noborder">
-    <div class="skill-evidence" id="skillEvidence" aria-live="polite"><span class="ev-hint">Dotted-underline skills are clickable — tap one to see where I've used it.</span></div>
+
+    <!-- ===== core stack: what to remember if you remember nothing else ===== -->
+    <div class="core-stack">
+      <p class="mini-label">Core stack</p>
+      <ul class="core-stack-list">
+        <li>Python</li>
+        <li>SQL</li>
+        <li>PySpark</li>
+        <li>Azure Databricks</li>
+        <li>Delta Lake</li>
+        <li>AWS</li>
+        <li>RAG &amp; LLMs</li>
+      </ul>
+    </div>
+
+    <!-- ===== finder: recruiters work from keyword checklists ===== -->
+    <div class="skill-finder">
+      <label class="mini-label" for="skillFinder">Looking for something specific?</label>
+      <input id="skillFinder" class="finder-input" type="search" placeholder="Try &ldquo;Kafka&rdquo;, &ldquo;Glue&rdquo;, &ldquo;Snowflake&rdquo;&hellip;" autocomplete="off" spellcheck="false">
+      <p class="finder-result" id="finderResult" aria-live="polite"></p>
+    </div>
+
+    <div class="skill-evidence" id="skillEvidence" aria-live="polite"><span class="ev-hint">Skills marked with a dot link to where I&rsquo;ve used them &mdash; click one.</span></div>
 
     <div class="skills-list">
       <div class="skill-group">
         <h3>Programming</h3>
-        <p><button type="button" class="skill-item has-ev" data-ev="rag inventory eurekai" aria-pressed="false">Python</button>, <button type="button" class="skill-item has-ev" data-ev="cognizant" aria-pressed="false">SQL</button>, <button type="button" class="skill-item has-ev" data-ev="cognizant" aria-pressed="false">PySpark</button>, <button type="button" class="skill-item has-ev" data-ev="cognizant" aria-pressed="false">Spark SQL</button>, <span class="skill-item">C++</span></p>
+        <div class="skill-chips"><button type="button" class="skill-item has-ev" data-ev="rag inventory eurekai" aria-pressed="false">Python</button><button type="button" class="skill-item has-ev" data-ev="cognizant" aria-pressed="false">SQL</button><button type="button" class="skill-item has-ev" data-ev="cognizant" aria-pressed="false">PySpark</button><button type="button" class="skill-item has-ev" data-ev="cognizant" aria-pressed="false">Spark SQL</button><span class="skill-item">C++</span></div>
+      </div>
+      <div class="skill-group">
+        <h3>Python Libraries</h3>
+        <div class="skill-chips"><button type="button" class="skill-item has-ev" data-ev="inventory" aria-pressed="false">Pandas</button><button type="button" class="skill-item has-ev" data-ev="inventory" aria-pressed="false">NumPy</button><button type="button" class="skill-item has-ev" data-ev="inventory" aria-pressed="false">Matplotlib</button><button type="button" class="skill-item has-ev" data-ev="inventory" aria-pressed="false">Seaborn</button></div>
       </div>
       <div class="skill-group">
         <h3>Data Engineering</h3>
-        <p><button type="button" class="skill-item has-ev" data-ev="cognizant inventory" aria-pressed="false">ETL/ELT</button>, <button type="button" class="skill-item has-ev" data-ev="cognizant" aria-pressed="false">Apache Spark</button>, <button type="button" class="skill-item has-ev" data-ev="cognizant" aria-pressed="false">Databricks</button>, <button type="button" class="skill-item has-ev" data-ev="cognizant" aria-pressed="false">Delta Lake</button>, <span class="skill-item">Airflow</span>, <span class="skill-item">Kafka</span>, <button type="button" class="skill-item has-ev" data-ev="cognizant" aria-pressed="false">Data Modeling</button></p>
+        <div class="skill-chips"><button type="button" class="skill-item has-ev" data-ev="cognizant inventory" aria-pressed="false">ETL/ELT</button><button type="button" class="skill-item has-ev" data-ev="cognizant" aria-pressed="false">Apache Spark</button><button type="button" class="skill-item has-ev" data-ev="cognizant" aria-pressed="false">Databricks</button><button type="button" class="skill-item has-ev" data-ev="cognizant" aria-pressed="false">Delta Lake</button><span class="skill-item">Airflow</span><span class="skill-item">Kafka</span><button type="button" class="skill-item has-ev" data-ev="cognizant" aria-pressed="false">Data Modeling</button><button type="button" class="skill-item has-ev" data-ev="inventory" aria-pressed="false">REST APIs</button></div>
       </div>
       <div class="skill-group">
         <h3>AI / ML</h3>
-        <p><button type="button" class="skill-item has-ev" data-ev="eurekai" aria-pressed="false">Machine Learning</button>, <button type="button" class="skill-item has-ev" data-ev="eurekai" aria-pressed="false">Random Forest</button>, <button type="button" class="skill-item has-ev" data-ev="eurekai" aria-pressed="false">Ensemble Models</button>, <button type="button" class="skill-item has-ev" data-ev="inventory" aria-pressed="false">Forecasting (Prophet, ARIMA)</button>, <button type="button" class="skill-item has-ev" data-ev="eurekai inventory" aria-pressed="false">Feature Engineering</button></p>
+        <div class="skill-chips"><button type="button" class="skill-item has-ev" data-ev="eurekai" data-alias="ml" aria-pressed="false">Machine Learning</button><button type="button" class="skill-item has-ev" data-ev="eurekai" aria-pressed="false">Random Forest</button><button type="button" class="skill-item has-ev" data-ev="eurekai" aria-pressed="false">Ensemble Models</button><button type="button" class="skill-item has-ev" data-ev="inventory" aria-pressed="false">Forecasting (Prophet, ARIMA)</button><button type="button" class="skill-item has-ev" data-ev="eurekai inventory" aria-pressed="false">Feature Engineering</button></div>
       </div>
       <div class="skill-group">
         <h3>GenAI</h3>
-        <p><button type="button" class="skill-item has-ev" data-ev="rag" aria-pressed="false">LLMs</button>, <button type="button" class="skill-item has-ev" data-ev="rag" aria-pressed="false">RAG</button>, <button type="button" class="skill-item has-ev" data-ev="rag" aria-pressed="false">Embeddings</button>, <button type="button" class="skill-item has-ev" data-ev="rag" aria-pressed="false">Vector Search</button>, <span class="skill-item">Prompt Engineering</span>, <button type="button" class="skill-item has-ev" data-ev="rag" aria-pressed="false">OpenAI APIs</button></p>
+        <div class="skill-chips"><button type="button" class="skill-item has-ev" data-ev="rag" data-alias="llm gpt" aria-pressed="false">LLMs</button><button type="button" class="skill-item has-ev" data-ev="rag" data-alias="retrieval augmented generation" aria-pressed="false">RAG</button><button type="button" class="skill-item has-ev" data-ev="rag" aria-pressed="false">Embeddings</button><button type="button" class="skill-item has-ev" data-ev="rag" data-alias="vector db" aria-pressed="false">Vector Search</button><span class="skill-item">Prompt Engineering</span><button type="button" class="skill-item has-ev" data-ev="rag" data-alias="openai gpt" aria-pressed="false">OpenAI APIs</button></div>
       </div>
       <div class="skill-group">
         <h3>Data Platforms</h3>
-        <p><button type="button" class="skill-item has-ev" data-ev="cognizant" aria-pressed="false">Delta Lake</button>, <span class="skill-item">Snowflake</span>, <button type="button" class="skill-item has-ev" data-ev="cognizant" aria-pressed="false">Synapse</button>, <span class="skill-item">Redshift</span></p>
+        <div class="skill-chips"><button type="button" class="skill-item has-ev" data-ev="cognizant" aria-pressed="false">Delta Lake</button><span class="skill-item">Snowflake</span><button type="button" class="skill-item has-ev" data-ev="cognizant" aria-pressed="false">Synapse</button><span class="skill-item">Redshift</span></div>
       </div>
       <div class="skill-group">
         <h3>Azure</h3>
-        <p><button type="button" class="skill-item has-ev" data-ev="cognizant" aria-pressed="false">Databricks</button>, <span class="skill-item">Data Factory</span>, <button type="button" class="skill-item has-ev" data-ev="cognizant" aria-pressed="false">Synapse</button>, <button type="button" class="skill-item has-ev" data-ev="cognizant" aria-pressed="false">ADLS Gen2</button>, <span class="skill-item">Azure SQL</span></p>
+        <div class="skill-chips"><button type="button" class="skill-item has-ev" data-ev="cognizant" aria-pressed="false">Databricks</button><span class="skill-item" data-alias="adf">Data Factory</span><button type="button" class="skill-item has-ev" data-ev="cognizant" aria-pressed="false">Synapse</button><button type="button" class="skill-item has-ev" data-ev="cognizant" data-alias="adls data lake" aria-pressed="false">ADLS Gen2</button><span class="skill-item">Azure SQL</span></div>
       </div>
       <div class="skill-group">
         <h3>AWS</h3>
-        <p><span class="skill-item">S3</span>, <button type="button" class="skill-item has-ev" data-ev="cognizant" aria-pressed="false">Glue</button>, <span class="skill-item">EMR</span>, <span class="skill-item">Redshift</span>, <span class="skill-item">Lambda</span>, <span class="skill-item">Athena</span></p>
+        <div class="skill-chips"><span class="skill-item">S3</span><button type="button" class="skill-item has-ev" data-ev="cognizant" aria-pressed="false">Glue</button><span class="skill-item">EMR</span><span class="skill-item">Redshift</span><span class="skill-item">Lambda</span><span class="skill-item">Athena</span></div>
       </div>
       <div class="skill-group">
         <h3>Tools &amp; CI/CD</h3>
-        <p><span class="skill-item">Git</span>, <span class="skill-item">Bitbucket</span>, <span class="skill-item">Jenkins</span>, <span class="skill-item">CI/CD</span>, <span class="skill-item">DBeaver</span>, <span class="skill-item">PyCharm</span></p>
+        <div class="skill-chips"><span class="skill-item">Git</span><span class="skill-item">Bitbucket</span><span class="skill-item">Jenkins</span><span class="skill-item" data-alias="cicd">CI/CD</span><span class="skill-item">DBeaver</span><span class="skill-item">PyCharm</span></div>
       </div>
     </div>
   </section>

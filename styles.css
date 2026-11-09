@@ -684,53 +684,120 @@ main {
 .slider-arrow[hidden] { display: none; }
 
 /* ---------------- SKILLS ---------------- */
-.skills-list {
-  display: flex;
-  flex-direction: column;
-  gap: 16px;
-}
+/* A headline row, a keyword finder, then numbered groups of chips in two
+   columns — built for scanning, with no invented proficiency levels. */
+.core-stack { margin: 0 0 40px; }
+.core-stack .mini-label { margin-bottom: 14px; }
 
-.skill-group {
+.core-stack-list {
   display: flex;
   flex-wrap: wrap;
-  column-gap: 10px;
-  padding-bottom: 14px;
-  border-bottom: 1px solid var(--border);
+  gap: 6px 0;
+  margin: 0;
+  padding: 0;
+  list-style: none;
 }
 
-.skill-group:last-child { border-bottom: none; }
+.core-stack-list li {
+  font-family: var(--display);
+  font-weight: 600;
+  font-size: clamp(16px, 2.4vw, 22px);
+  letter-spacing: -0.005em;
+  color: var(--text);
+}
+
+.core-stack-list li:not(:last-child)::after {
+  content: "\00b7";
+  margin: 0 0.55em;
+  font-weight: 400;
+  color: var(--accent);
+}
+
+.skill-finder { margin: 0 0 26px; }
+.skill-finder .mini-label { display: block; margin-bottom: 10px; }
+
+.finder-input {
+  width: 100%;
+  max-width: 420px;
+  padding: 11px 14px;
+  background: transparent;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  outline: none;
+  font: inherit;
+  font-size: 14px;
+  color: var(--text);
+  text-shadow: none;
+  transition: border-color 0.2s ease;
+}
+
+.finder-input::placeholder { color: var(--text-faint); }
+.finder-input:focus { border-color: var(--accent-dim); }
+
+.finder-result { min-height: 1.6em; margin: 10px 0 0; font-size: 12.5px; color: var(--text-faint); }
+.finder-result strong { color: var(--accent-bright); font-weight: 600; }
+
+.skills-list {
+  counter-reset: sg;
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 40px 48px;
+  margin-top: 34px;
+  padding-top: 34px;
+  border-top: 1px solid var(--border);
+}
+
+.skill-group { transition: opacity 0.3s ease; }
+.skill-group.is-muted { opacity: 0.28; }
 
 .skill-group h3 {
+  display: flex;
+  align-items: baseline;
+  gap: 10px;
+  margin: 0 0 14px;
   font-size: 12px;
-  text-transform: uppercase;
-  letter-spacing: 0.08em;
-  color: var(--text);
-  margin: 0;
   font-weight: 600;
-  flex: 0 0 190px;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--text);
 }
 
-.skill-group p {
-  margin: 0;
-  color: var(--text-dim);
-  font-size: 13.5px;
-  flex: 1 1 300px;
+.skill-group h3::before {
+  counter-increment: sg;
+  content: counter(sg, decimal-leading-zero) " /";
+  font-size: 11px;
+  letter-spacing: 0.14em;
+  color: var(--accent);
 }
 
-/* Each skill fades and lifts into place, staggered, the first time its
-   group scrolls into view — then stays put. Hover gives it a quiet glow. */
+.skill-chips { display: flex; flex-wrap: wrap; gap: 8px; }
+
+/* Each chip fades and lifts into place, staggered, the first time its group
+   scrolls into view — then stays put. */
 .skill-item {
   display: inline-block;
-  transition: opacity 0.5s ease, transform 0.5s ease, color 0.15s ease, text-shadow 0.15s ease;
+  padding: 5px 12px;
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  font-size: 13px;
+  line-height: 1.5;
+  color: var(--text);
+  transition: opacity 0.5s ease, transform 0.5s ease, color 0.15s ease,
+              border-color 0.2s ease, background 0.2s ease;
   transition-delay: var(--delay, 0s);
 }
 
 .skill-item.js-anim { opacity: 0; transform: translateY(4px); }
+.skill-item:hover { border-color: var(--text-faint); }
 
-.skill-item:hover {
-  color: var(--accent);
-  text-shadow: 0 0 5px rgba(188, 106, 69, 0.25);
+@media (max-width: 900px) {
+  /* Wrapping would strand a separator dot at the end of a line. */
+  .core-stack-list { gap: 6px 22px; }
+  .core-stack-list li:not(:last-child)::after { display: none; }
 }
+
+/* While the finder is in use, reveal staggering would just feel laggy. */
+.skills-list.is-finding .skill-item { transition-delay: 0s; }
 
 /* ---------------- EXPERIENCE ---------------- */
 .timeline {
@@ -983,32 +1050,47 @@ a.contact-item:hover { color: var(--accent-bright); text-shadow: 0 0 5px rgba(18
 
 .job, .project { scroll-margin-top: 96px; }
 
-/* Skills: skills the CV backs with a real project or role are clickable
-   and show where they were used. */
+/* Skills: chips the CV backs with a real project or role carry a dot, are
+   clickable, and show where they were used. */
 button.skill-item {
   background: none;
-  border: 0;
-  padding: 0;
-  margin: 0;
   font: inherit;
-  color: inherit;
+  font-size: 13px;
+  line-height: 1.5;
   text-shadow: inherit;
   text-align: inherit;
   cursor: default;
 }
 
 .skill-item.has-ev {
+  padding-left: 10px;
+  color: var(--text);
+  border-color: var(--accent-dim);
   cursor: pointer;
-  text-decoration: underline dotted;
-  text-decoration-color: var(--accent-dim);
-  text-underline-offset: 5px;
 }
 
-.skill-item.has-ev:hover,
+.skill-item.has-ev::before {
+  content: "";
+  display: inline-block;
+  width: 5px;
+  height: 5px;
+  margin-right: 8px;
+  border-radius: 50%;
+  background: var(--accent);
+  vertical-align: 2px;
+}
+
+.skill-item.has-ev:hover { color: var(--accent-bright); border-color: var(--accent); }
+
 .skill-item.has-ev[aria-pressed="true"] {
   color: var(--accent-bright);
-  text-decoration-color: var(--accent);
+  border-color: var(--accent);
+  background: rgba(188, 106, 69, 0.12);
 }
+
+/* Finder states */
+.skill-item.dim { opacity: 0.3; }
+.skill-item.match { color: var(--text); border-color: var(--accent); background: rgba(188, 106, 69, 0.14); }
 
 .skill-evidence {
   margin: 0 0 30px;
@@ -1144,6 +1226,8 @@ button.skill-item {
 }
 
 .copy-btn:hover { color: var(--text); border-color: var(--text-faint); }
+
+.contact-resume { display: inline-block; margin-top: 22px; font-size: 14px; }
 .copy-btn.copied { color: var(--accent-bright); border-color: var(--accent-dim); }
 
 /* Quick-jump palette (Cmd/Ctrl + K) and its footer hint. */
@@ -1306,8 +1390,7 @@ button.skill-item {
   .menu-btn { display: inline-block; }
   .hero { padding: 36px 0 20px; }
   .section { padding: 36px 0; }
-  .skill-group { flex-direction: column; gap: 6px; }
-  .skill-group h3 { flex: none; }
+  .skills-list { grid-template-columns: 1fr; gap: 30px; }
 }
 
 /* ---------------- PRINT ---------------- */
@@ -1342,13 +1425,12 @@ button.skill-item {
 
   /* Interactive and decorative furniture that means nothing on paper. */
   #rain, .bg-overlay, .nav, .palette, .toast, .palette-hint, .copy-btn,
-  .skill-evidence, .flow, .slider-arrow, .quote-slider, .availability,
+  .skill-evidence, .skill-finder, .flow, .slider-arrow, .quote-slider, .availability,
   .social-row { display: none !important; }
 
   /* Scroll-reveal hides things until they're seen; on paper show them all. */
   .js-anim { opacity: 1 !important; filter: none !important; transform: none !important; }
 
-  .skill-item.has-ev { text-decoration: none; }
   .job, .project, .skill-group, .fact, .blog-post, .stat { break-inside: avoid; }
   .footer { border-top-color: var(--border); padding: 8mm 0 0; }
 }
